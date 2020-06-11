@@ -174,9 +174,6 @@ def enroll_email(course_id, student_email, auto_enroll=False, email_students=Fal
 
     after_state = EmailEnrollmentState(course_id, student_email)
 
-    log.info('-----------------------Email params from enroll_email-------------------------')
-    log.info(email_params)
-    log.info('-----------------------Email params from enroll_email-------------------------')
 
     return previous_state, after_state, enrollment_obj
 
@@ -386,6 +383,10 @@ def get_email_params(course, auto_enroll, secure=True, course_key=None, display_
         'SITE_NAME',
         settings.SITE_NAME
     )
+    log.info('------------------------------------------------')
+    log.info(configuration_helpers.get_value('SITE_NAME'))
+    log.info(settings.SITE_NAME)
+    log.info('------------------------------------------------')
     # TODO: Use request.build_absolute_uri rather than '{proto}://{site}{path}'.format
     # and check with the Services team that this works well with microsites
     registration_url = u'{proto}://{site}{path}'.format(
@@ -421,9 +422,6 @@ def get_email_params(course, auto_enroll, secure=True, course_key=None, display_
         'course_about_url': course_about_url,
         'is_shib_course': is_shib_course,
     }
-    log.info('-----------------------Email params from get email parama-------------------------')
-    log.info(email_params)
-    log.info('-----------------------Email params from get email parama-------------------------')
     return email_params
 
 
@@ -488,9 +486,6 @@ def send_mail_to_student(student, param_dict, language=None):
         language=language,
         user_context=param_dict,
     )
-    log.info('===================================================')
-    log.info(param_dict)
-    log.info('===================================================')
 
     ace.send(message)
 
