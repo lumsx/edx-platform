@@ -481,6 +481,9 @@ def send_mail_to_student(student, param_dict, language=None):
         language=language,
         user_context=param_dict,
     )
+    log.info('===================================================')
+    log.info(param_dict)
+    log.info('===================================================')
 
     ace.send(message)
 
