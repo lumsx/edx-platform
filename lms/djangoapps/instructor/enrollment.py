@@ -174,6 +174,10 @@ def enroll_email(course_id, student_email, auto_enroll=False, email_students=Fal
 
     after_state = EmailEnrollmentState(course_id, student_email)
 
+    log.info('-----------------------Email params from enroll_email-------------------------')
+    log.info(email_params)
+    log.info('-----------------------Email params from enroll_email-------------------------')
+
     return previous_state, after_state, enrollment_obj
 
 
@@ -417,6 +421,9 @@ def get_email_params(course, auto_enroll, secure=True, course_key=None, display_
         'course_about_url': course_about_url,
         'is_shib_course': is_shib_course,
     }
+    log.info('-----------------------Email params from get email parama-------------------------')
+    log.info(email_params)
+    log.info('-----------------------Email params from get email parama-------------------------')
     return email_params
 
 
