@@ -464,6 +464,9 @@ def send_mail_to_student(student, param_dict, language=None):
 
     # Get other required context variables for current site
     context_vars = get_base_template_context(param_dict['site_name'])
+    log.info('--------------------------------------------------------')
+    log.info(context_vars)
+    log.info('--------------------------------------------------------')
     param_dict.update(context_vars)
 
     # see if there is an activation email template definition available as configuration,
