@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.cache import cache
 from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 
-ogger = getLogger(__name__)
+logger = getLogger(__name__)
 
 CACHE_NAME = 'context_processor.dynamic_theming'
 EDLY_CACHE_NAME = 'context_processor.edly_app'
@@ -37,7 +37,7 @@ def dynamic_theming_context(request):  # pylint: disable=unused-argument
     logger.exception('Site : %s' % (request.site))
     logger.exception('Colors : %s' % (configuration_helpers.get_configuration_dict('COLORS')))
     logger.exception("-------------------------------------------------------------------------------")
-    
+
     if not theming_context:
         theming_context = {}
         theming_context.update(
