@@ -3534,6 +3534,11 @@ FERNET_KEYS = [
 # Maximum number of rows to fetch in XBlockUserStateClient calls. Adjust for performance
 USER_STATE_BATCH_SIZE = 5000
 
+#####################################   LUMSx   ######################################
+# [COURSE_RATING]
+if FEATURES.get('ENABLE_COURSE_RATING'):
+    INSTALLED_APPS.append('openedx.features.course_rating')
+
 ############## Plugin Django Apps #########################
 
 from openedx.core.djangoapps.plugins import plugin_apps, plugin_settings, constants as plugin_constants

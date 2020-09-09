@@ -145,6 +145,12 @@ urlpatterns = [
     url(r'^api/experiments/', include('experiments.urls', namespace='api_experiments')),
 ]
 
+# [COURSE_RATING]
+if settings.FEATURES.get('ENABLE_COURSE_RATING'):
+    urlpatterns += [
+        url(r'^course_rating/', include('openedx.features.course_rating.urls', namespace='course_rating')),
+    ]
+
 if settings.FEATURES.get('ENABLE_MOBILE_REST_API'):
     urlpatterns += [
         url(r'^api/mobile/(?P<api_version>v(1|0.5))/', include('mobile_api.urls')),
