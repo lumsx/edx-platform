@@ -93,6 +93,8 @@ from util.request_rate_limiter import BadRequestRateLimiter, PasswordResetEmailR
 from util.db import outer_atomic
 from util.json_request import JsonResponse
 from util.password_policy_validators import normalize_password, validate_password
+from edly_panel_app.helpers import handle_user_enrollment
+
 
 log = logging.getLogger("edx.student")
 
@@ -406,7 +408,7 @@ def change_enrollment(request, check_access=True):
                     CourseEnrollment.enroll(user, course_id, check_access=check_access, mode=enroll_mode)
             except Exception:  # pylint: disable=broad-except
                 return HttpResponseBadRequest(_("Could not enroll"))
-
+        handle_user_enrollment(course_id, user, action)
         # If we have more than one course mode or professional ed is enabled,
         # then send the user to the choose your track page.
         # (In the case of no-id-professional/professional ed, this will redirect to a page that
@@ -429,6 +431,7 @@ def change_enrollment(request, check_access=True):
 
         CourseEnrollment.unenroll(user, course_id)
         REFUND_ORDER.send(sender=None, course_enrollment=enrollment)
+        handle_user_enrollment(course_id, user, action)
         return HttpResponse()
     else:
         return HttpResponseBadRequest(_("Enrollment action is invalid"))
