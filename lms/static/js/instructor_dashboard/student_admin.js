@@ -73,6 +73,145 @@
             this.$request_response_error_all = this.$section.find('.course-specific-container .request-response-error');
             this.$enrollment_status_link = findAndAssert(this.$section, 'a.enrollment-status-link');
             this.$enrollment_status = findAndAssert(this.$section, '.student-enrollment-status');
+
+            this.$user_ban_from_all_courses_info_field = this.$section.find("textarea[name='all-courses-user-banning-field']");
+            this.$btn_ban_user_from_all_courses = this.$section.find("input[name='all-courses-ban-user']");
+            this.$btn_unban_user_from_all_courses = this.$section.find("input[name='all-courses-un-ban-user']");
+            this.$user_ban_error_all_courses_section = this.$section.find('.all-courses-user-ban-container .request-response-error');
+            this.$user_ban_results_from_all_courses = this.$section.find('.all-courses-user-ban-container .all-courses-user-ban-results');
+            this.$user_ban_from_course_info_field = this.$section.find("textarea[name='user-banning-field']");
+            this.$btn_ban_user_from_course = this.$section.find("input[name='ban-user']");
+            this.$btn_unban_user_from_course = this.$section.find("input[name='un-ban-user']");
+            this.$user_ban_error_section = this.$section.find('.user-ban-container .request-response-error');
+            this.$user_ban_results_from_course = this.$section.find('.user-ban-container .user-ban-results');
+
+            this.$btn_ban_user_from_all_courses.click(function () {
+              studentadmin.$user_ban_results_from_all_courses.empty();
+              studentadmin.$user_ban_error_all_courses_section.empty();
+              studentadmin.fetch_ban_unban_user_for_all_courses();
+            });
+            this.$btn_unban_user_from_all_courses.click(function () {
+              studentadmin.$user_ban_results_from_all_courses.empty();
+              studentadmin.$user_ban_error_all_courses_section.empty();
+              studentadmin.fetch_ban_unban_user_for_all_courses();
+            });
+
+            StudentAdmin.prototype.fetch_ban_unban_user_for_all_courses = function (){
+              if (!studentadmin.$user_ban_from_all_courses_info_field.val()) {
+                return studentadmin.$user_ban_error_all_courses_section.text(
+                  gettext('Please enter at least one email address/username')
+                );
+              }
+
+                return $.ajax({
+                  type: 'POST',
+                  dataType: 'json',
+                  url: $(event.target).data('endpoint'),
+                  data:  {
+                      action: $(event.target).data('action'),
+                      identifiers: studentadmin.$user_ban_from_all_courses_info_field.val(),
+                  },
+                  success: studentadmin.clear_errors_then(function (data) {
+                    return studentadmin.display_all_courses_ban_results(data);
+                  }),
+                  error: statusAjaxError(function () {
+                    return studentadmin.$user_ban_error_all_courses_section.text(
+                      gettext('Error in baning the student(s)')
+                    );
+                  })
+                });
+            };
+
+            StudentAdmin.prototype.display_all_courses_ban_results = function (dataFromServer){
+              let successful_user = dataFromServer.successful_results;
+              let result_display =studentadmin.$user_ban_results_from_all_courses;
+              if (successful_user.length > 0) {
+
+                result_display.append('<h5> Successfully Banned Users </h5>');
+                result_display.append('<ul id="success_users" style="color: green"></ul>');
+
+                for (let i = 0, len = successful_user.length; i < len; ++i) {
+                  let user = successful_user[i];
+                  $('#success_users').append('<li><strong>' + user.identifier + '</strong></li>');
+                }
+              }
+
+              let invalid_users = dataFromServer.failed_results;
+              if (invalid_users.length > 0){
+                result_display.append('<h5> Not Successful attempt to Ban Users </h5>');
+                result_display.append('<ul id="failed_users" style="color: red"></ul>').find('ul');
+
+                for (let i = 0, len = invalid_users.length; i < len; ++i) {
+                     let user = invalid_users[i];
+                    $('#failed_users').append('<li><strong>' + user.identifier + '</strong>     reason: ' + user.reason + '</li>');
+                 }
+              }
+            };
+
+            this.$btn_ban_user_from_course.click(function () {
+              studentadmin.$user_ban_results_from_course.empty();
+              studentadmin.$user_ban_error_section.empty();
+              studentadmin.fetch_ban_unban_user();
+            });
+
+            this.$btn_unban_user_from_course.click(function () {
+              studentadmin.$user_ban_results_from_course.empty();
+              studentadmin.$user_ban_error_section.empty();
+              studentadmin.fetch_ban_unban_user();
+            });
+
+            StudentAdmin.prototype.fetch_ban_unban_user = function (){
+              if (!studentadmin.$user_ban_from_course_info_field.val()) {
+                return studentadmin.$user_ban_error_section.text(
+                  gettext('Please enter at least one email address/username')
+                );
+              }
+
+                return $.ajax({
+                  type: 'POST',
+                  dataType: 'json',
+                  url: $(event.target).data('endpoint'),
+                  data:  {
+                      action: $(event.target).data('action'),
+                      identifiers: studentadmin.$user_ban_from_course_info_field.val(),
+                  },
+                  success: studentadmin.clear_errors_then(function (data) {
+                    return studentadmin.display_ban_results(data);
+                  }),
+                  error: statusAjaxError(function () {
+                    return studentadmin.$user_ban_error_section.text(
+                      gettext('Error in baning the student(s)')
+                    );
+                  })
+                });
+            };
+
+            StudentAdmin.prototype.display_ban_results = function (dataFromServer){
+              let successful_user = dataFromServer.successful_results;
+              let result_display =studentadmin.$user_ban_results_from_course;
+              if (successful_user.length > 0) {
+
+                result_display.append('<h5> Successfully Banned Users </h5>');
+                result_display.append('<ul id="all-success_users" style="color: green"></ul>');
+
+                for (let i = 0, len = successful_user.length; i < len; ++i) {
+                  let user = successful_user[i];
+                  $('#all-success_users').append('<li><strong>' + user.identifier + '</strong></li>');
+                }
+              }
+
+              let invalid_users = dataFromServer.failed_results;
+              if (invalid_users.length > 0){
+                result_display.append('<h5> Not Successful attempt to Ban Users </h5>');
+                result_display.append('<ul id="all-failed_users" style="color: red"></ul>').find('ul');
+
+                for (let i = 0, len = invalid_users.length; i < len; ++i) {
+                     let user = invalid_users[i];
+                    $('#all-failed_users').append('<li><strong>' + user.identifier + '</strong> reason: ' + user.reason + '</li>');
+                 }
+              }
+            };
+
             this.$enrollment_status_link.click(function(e) {
                 var errorMessage, fullErrorMessage, uniqStudentIdentifier;
                 e.preventDefault();

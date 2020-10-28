@@ -14,6 +14,7 @@ import re
 import string
 import StringIO
 import time
+from datetime import datetime
 
 import unicodecsv
 from django.conf import settings
@@ -28,6 +29,7 @@ from django.core.mail.message import EmailMessage
 from django.urls import reverse
 from django.core.validators import validate_email
 from django.db import IntegrityError, transaction
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
@@ -44,6 +46,7 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from six import text_type
+from dateutil.parser import parse as date_parser
 
 import instructor_analytics.basic
 import instructor_analytics.csvs
@@ -120,7 +123,10 @@ from student.models import (
     anonymous_id_for_user,
     get_user_by_username_or_email,
     unique_id_for_user,
-    is_email_retired
+    is_email_retired,
+    EnrollmentBanned,
+    CourseEnrollmentBanned
+
 )
 from student.roles import CourseFinanceAdminRole, CourseSalesAdminRole
 from submissions import api as sub_api  # installed from the edx-submissions repository
@@ -3592,3 +3598,278 @@ def _create_error_response(request, msg):
     in JSON form.
     """
     return JsonResponse({"error": _(msg)}, 400)
+
+
+@ensure_csrf_cookie
+@cache_control(no_cache=True, no_store=True, must_revalidate=True)
+@require_level('staff')
+@require_http_methods(['POST'])
+@require_post_params(
+    action="'all-ban' or 'all-unban'",
+    identifiers="encoded stringified list of emails and/or usernames and expiry time seperated by newlines")
+def change_student_access_status_from_all_courses(request, course_id):
+    """
+       Ban the student from the all courses.
+       :param request: HttpRequest object,
+       :param course_id: course identifier for the course form staff is accessing to ban,
+       :return: JsonResponse object containing the success/faliure message and exception data
+       """
+    allowed_actions = ['all-ban', 'all-unban']
+    action = request.POST.get('action')
+
+    if action not in allowed_actions:
+        return JsonResponse({'message': 'Bad Action type'}, status=400)
+
+    usernames_or_emails = re.split(r'[\n,]', request.POST.get('identifiers'))
+    usernames_or_emails = list(set([u.strip() for u in usernames_or_emails if u]))
+
+    if action == 'all-ban':
+        return _set_student_all_ban_status(usernames_or_emails)
+
+    elif action == 'all-unban':
+        return _remove_student_all_ban_status(usernames_or_emails)
+
+
+def _set_student_all_ban_status(usernames_or_emails):
+    successful_usernames, invalid_usernames = [], []
+    users = User.objects.filter(
+        Q(email__in=usernames_or_emails) | Q(username__in=usernames_or_emails)
+    )
+
+    for user in users:
+        student_provided_info = user.username if user.username in usernames_or_emails else user.email
+        usernames_or_emails.remove(student_provided_info)
+
+        banned_user, created = EnrollmentBanned.objects.get_or_create(email=user.email)
+
+        if not created:
+            banned_user.is_active = True
+            banned_user.save(update_fields=['is_active'])
+
+        successful_usernames.append({'identifier': student_provided_info, 'reason': ''})
+
+    for raw_user in usernames_or_emails:
+        if re.search(r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$', raw_user):
+            banned_user, created = EnrollmentBanned.objects.get_or_create(email=raw_user)
+            banned_user.is_active = True
+            banned_user.save(update_fields=['is_active'])
+            successful_usernames.append({'identifier': raw_user, 'reason': ''})
+        else:
+            invalid_usernames.append({'identifier': raw_user, 'reason': 'username does not exist and cannot be added'})
+
+    results = {
+        'action': 'all-ban',
+        'failed_results': invalid_usernames,
+        'successful_results': successful_usernames
+    }
+
+    return JsonResponse(results)
+
+
+def _remove_student_all_ban_status(usernames_or_emails):
+    successful_usernames, invalid_usernames = [], []
+    registered_users_emails = User.objects.filter(
+        Q(email__in=usernames_or_emails) | Q(username__in=usernames_or_emails)
+    )
+
+    registered_users_emails_values = registered_users_emails.values_list('email', flat=True)
+    EnrollmentBanned.objects.filter(email__in=registered_users_emails_values).update(is_active=False)
+
+    for user in registered_users_emails:
+        student_provided_info = user.username if user.username in usernames_or_emails else user.email
+        usernames_or_emails.remove(student_provided_info)
+        successful_usernames.append({'identifier': student_provided_info, 'reason': ''})
+
+    unregistered_emails = []
+
+    for raw_user in usernames_or_emails:
+        if re.search(r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$', raw_user):
+            unregistered_emails.append(raw_user)
+            successful_usernames.append({'identifier': raw_user, 'reason': ''})
+        else:
+            invalid_usernames.append(
+                {'identifier': raw_user, 'reason': 'username does not exist and cannot be added'}
+            )
+
+    EnrollmentBanned.objects.filter(email__in=unregistered_emails).update(is_active=False)
+
+    results = {
+        'action': 'all-unban',
+        'failed_results': invalid_usernames,
+        'successful_results': successful_usernames
+    }
+
+    return JsonResponse(results)
+
+
+@ensure_csrf_cookie
+@cache_control(no_cache=True, no_store=True, must_revalidate=True)
+@require_level('staff')
+@require_http_methods(['POST'])
+@require_post_params(
+    action="'ban' or 'unban'",
+    identifiers="encoded stringified list of emails and/or usernames and expiry time seperated by newlines")
+def change_student_access_status_for_course(request, course_id):
+    """
+    Ban the student from the particular course.
+    :param request: HttpRequest object,
+    :param course_id: course identifier for the course for whom to ban the student,
+    :return: JsonResponse object containing the success/faliure message and exception data
+    """
+    allowed_actions = ['ban', 'unban']
+    action = request.POST.get('action')
+
+    if action not in allowed_actions:
+        return JsonResponse({'message': 'Bad Action type'}, status=400)
+
+    course_id = CourseKey.from_string(course_id)
+    usernames_expiry_key_value = _format_student_info_to_key_value(request.POST.get('identifiers'))
+
+    if action == 'ban':
+        return _ban_student_from_course(course_id, usernames_expiry_key_value)
+
+    elif action == 'unban':
+        return _unban_student_from_course(course_id, usernames_expiry_key_value)
+
+
+def _ban_student_from_course(course_id, usernames_expiry_key_value):
+    successful_usernames, invalid_usernames = [], []
+    usernames_or_emails = list(usernames_expiry_key_value.keys())
+    users = User.objects.filter(
+        Q(email__in=usernames_or_emails) | Q(username__in=usernames_or_emails)
+    )
+
+    for user in users:
+        student_provided_info = user.username if user.username in usernames_expiry_key_value else user.email
+        usernames_or_emails.remove(student_provided_info)
+        expiry = usernames_expiry_key_value.get(user.username)
+
+        if not check_expiry_validity(student_provided_info, expiry, invalid_usernames):
+            continue
+
+        banned_user, created = CourseEnrollmentBanned.objects.get_or_create(
+            email=user.email,
+            course_id=course_id
+        )
+
+        banned_user.is_active = True
+        banned_user.expiry = expiry
+        banned_user.save(update_fields=['is_active', 'expiry'])
+
+        successful_usernames.append({'identifier': student_provided_info, 'reason': ''})
+
+    for raw_user in usernames_or_emails:
+        expiry = usernames_expiry_key_value[raw_user]
+
+        if not check_expiry_validity(raw_user, expiry, invalid_usernames):
+            continue
+
+        if re.search(r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$', raw_user):
+            banned_user, created = CourseEnrollmentBanned.objects.get_or_create(
+                email=raw_user,
+                course_id=course_id)
+            if not created:
+                banned_user.expiry = expiry
+                banned_user.is_active = True
+                banned_user.save(update_fields=['expiry', 'is_active'])
+
+            successful_usernames.append({'identifier': raw_user, 'reason': ''})
+        else:
+            invalid_usernames.append({'identifier': raw_user, 'reason': 'username does not exist and cannot be added'})
+
+    results = {
+        'action': 'ban',
+        'failed_results': invalid_usernames,
+        'successful_results': successful_usernames
+    }
+
+    return JsonResponse(results)
+
+
+def _unban_student_from_course(course_id, usernames_expiry_key_value):
+    successful_usernames, invalid_usernames = [], []
+    usernames_or_emails = list(usernames_expiry_key_value.keys())
+
+    registered_users_emails = User.objects.filter(
+        Q(email__in=usernames_or_emails) | Q(username__in=usernames_or_emails)
+    )
+
+    registered_users_emails_values = registered_users_emails.values_list('email', flat=True)
+
+    CourseEnrollmentBanned.objects.filter(
+        email__in=registered_users_emails_values,
+        course_id=course_id
+    ).update(is_active=False, expiry=None)
+
+    for user in registered_users_emails:
+        student_provided_info = user.username if user.username in usernames_expiry_key_value else user.email
+        usernames_or_emails.remove(student_provided_info)
+        successful_usernames.append({'identifier': student_provided_info, 'reason': ''})
+
+    for raw_user in usernames_or_emails:
+        invalid_usernames.append(
+            {'identifier': raw_user, 'reason': 'username does not exist and cannot be added'}
+        )
+
+    results = {
+        'action': 'unban',
+        'failed_results': invalid_usernames,
+        'successful_results': successful_usernames
+    }
+
+    return JsonResponse(results)
+
+
+def check_expiry_validity(identifier, expiry, invalid_usernames):
+    if expiry in ['past_time', 'invalid']:
+        reason = 'cannot set the time in past.'
+
+        if expiry == 'invalid':
+            reason = 'Invalid time format for the expiry due date.'
+
+        invalid_usernames.append({'identifier': identifier, 'reason': reason})
+        return False
+
+    return True
+
+
+def _format_student_info_to_key_value(user_and_expiry_raw):
+    student_info = {}
+    user_and_expiry_raw = re.split(r'\n', user_and_expiry_raw)
+
+    for raw_user in user_and_expiry_raw:
+        raw_user = raw_user.strip().split(',')
+
+        if not raw_user[0]:
+            continue
+
+        expiry = None
+
+        if len(raw_user) > 1:
+            if is_date((raw_user[1])):
+                expiry_date = date_parser(raw_user[1])
+                if expiry_date < datetime.now():
+                    expiry = 'past_time'
+                else:
+                    expiry = expiry_date
+            else:
+                expiry = 'invalid'
+
+        student_info[raw_user[0]] = expiry
+
+    return student_info
+
+
+def is_date(string, fuzzy=False):
+    """
+    Return whether the string can be interpreted as a date.
+
+    :param string: str, string to check for date
+    :param fuzzy: bool, ignore unknown tokens in string if True
+    """
+    try:
+        date_parser(string, fuzzy=fuzzy)
+        return True
+
+    except ValueError:
+        return False

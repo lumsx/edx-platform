@@ -27,7 +27,9 @@ from student.models import (
     RegistrationCookieConfiguration,
     UserAttribute,
     UserProfile,
-    UserTestGroup
+    UserTestGroup,
+    EnrollmentBanned,
+    CourseEnrollmentBanned
 )
 from student.roles import REGISTERED_ACCESS_ROLES
 from xmodule.modulestore.django import modulestore
@@ -314,6 +316,26 @@ class CourseEnrollmentAllowedAdmin(admin.ModelAdmin):
 
     class Meta(object):
         model = CourseEnrollmentAllowed
+
+
+@admin.register(EnrollmentBanned)
+class EnrollmentBannedAdmin(admin.ModelAdmin):
+    """ Admin interface for the EnrollmentBanned model. """
+    list_display = ('email', 'is_active',)
+    search_fields = ('email',)
+
+    class Meta(object):
+        model = EnrollmentBanned
+
+
+@admin.register(CourseEnrollmentBanned)
+class CourseEnrollmentBannedAdmin(admin.ModelAdmin):
+    """ Admin interface for the CourseEnrollmentBanned model. """
+    list_display = ('email', 'is_active', 'course_id', 'expiry')
+    search_fields = ('email', 'course_id',)
+
+    class Meta(object):
+        model = CourseEnrollmentBanned
 
 
 admin.site.register(UserTestGroup)
