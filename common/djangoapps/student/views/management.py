@@ -71,7 +71,7 @@ from student.helpers import (
     cert_info,
     generate_activation_email_context,
 )
-from student.message_types import EmailChange, PasswordReset
+from student.message_types import EmailChange, PasswordReset, CourseEnrollment as CourseEnrollmentMessageType
 from student.models import (
     AccountRecovery,
     CourseEnrollment,
@@ -406,6 +406,7 @@ def change_enrollment(request, check_access=True):
                 enroll_mode = CourseMode.auto_enroll_mode(course_id, available_modes)
                 if enroll_mode:
                     CourseEnrollment.enroll(user, course_id, check_access=check_access, mode=enroll_mode)
+                    send_course_enrollment_email_for_user(user, request, course_id)
             except Exception:  # pylint: disable=broad-except
                 return HttpResponseBadRequest(_("Could not enroll"))
         handle_user_enrollment(course_id, user, action)
@@ -1340,3 +1341,37 @@ def text_me_the_app(request):
     }
 
     return render_to_response('text-me-the-app.html', context)
+
+
+def send_course_enrollment_email_for_user(user, request, course_id, preferred_email=None):
+    """
+    Send out a course enrollment email for the given user.
+    Arguments:
+        user (User): Django User object
+        request (HttpRequest): Django request object
+        preferred_email (str): Send email to this address if present, otherwise fallback to user's email address.
+    """
+    site = get_current_site()
+    message_context = get_base_template_context(site)
+    course = modulestore().get_course(course_id)
+    course_id = text_type(course_id)
+    site_name = configuration_helpers.get_value('SITE_NAME', settings.SITE_NAME),
+    message_context.update({
+        'request': request,
+        'platform_name': configuration_helpers.get_value('PLATFORM_NAME', settings.PLATFORM_NAME),
+        'site_name': site_name,
+        'full_name': user.get_full_name(),
+        'course_name': course.display_name,
+        'course_url': '{protocol}://{site}{link}'.format(
+            protocol='https' if request.is_secure() else 'http',
+            site=site_name,
+            link=reverse('course_root', kwargs={'course_id': course_id})
+        ),
+    })
+
+    msg = CourseEnrollmentMessageType().personalize(
+        recipient=Recipient(user.username, preferred_email or user.email),
+        language=preferences_api.get_user_preference(user, LANGUAGE_KEY),
+        user_context=message_context,
+    )
+    ace.send(msg)
