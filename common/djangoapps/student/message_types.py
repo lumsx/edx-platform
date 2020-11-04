@@ -24,3 +24,10 @@ class EmailChange(BaseMessageType):
         super(EmailChange, self).__init__(*args, **kwargs)
 
         self.options['transactional'] = True
+
+
+class CourseEnrollment(BaseMessageType):
+    def __init__(self, *args, **kwargs):
+        super(CourseEnrollment, self).__init__(*args, **kwargs)
+
+        self.options['transactional'] = True
