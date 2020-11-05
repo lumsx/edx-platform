@@ -46,7 +46,11 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 from openedx.core.djangoapps.external_auth.models import ExternalAuthMap
 from openedx.features.course_duration_limits.access import check_course_expired
 from student import auth
-from student.models import CourseEnrollmentAllowed
+from student.models import (
+    CourseEnrollmentAllowed,
+    CourseEnrollmentBanned,
+    EnrollmentBanned
+)
 from student.roles import (
     CourseBetaTesterRole,
     CourseCcxCoachRole,
@@ -130,9 +134,13 @@ def has_access(user, action, obj, course_key=None):
     Returns an AccessResponse object.  It is up to the caller to actually
     deny access in a way that makes sense in context.
     """
+
     # Just in case user is passed in as None, make them anonymous
     if not user:
         user = AnonymousUser()
+
+    if user != AnonymousUser() and course_key and _is_banned_from_course(user, course_key):
+        return ACCESS_DENIED
 
     # Preview mode is only accessible by staff.
     if in_preview_mode() and course_key:
@@ -170,6 +178,24 @@ def has_access(user, action, obj, course_key=None):
     # returning a default, complain.
     raise TypeError("Unknown object type in has_access(): '{0}'"
                     .format(type(obj)))
+
+
+def _is_banned_from_course(user, course_key):
+    """
+    Checks if the user is banned from the course its trying to access
+    """
+    if EnrollmentBanned.objects.filter(email=user.email, is_active=1).exists():
+        return True
+
+    banned_user = CourseEnrollmentBanned.objects.filter(email=user.email, course_id=course_key, is_active=1).first()
+
+    if not banned_user:
+        return False
+
+    if CourseEnrollmentBanned.is_expired(banned_user):
+        return False
+
+    return True
 
 
 def has_staff_access_to_preview_mode(user, course_key):

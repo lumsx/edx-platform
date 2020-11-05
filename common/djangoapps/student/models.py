@@ -2744,3 +2744,40 @@ class AccountRecovery(models.Model):
         db_table = "auth_accountrecovery"
 
     objects = AccountRecoveryManager()
+
+
+class EnrollmentBanned(TimeStampedModel):
+    """
+    this table contains email, is_active status
+    """
+    email = models.CharField(max_length=255, unique=True, db_index=True)
+    is_active = models.BooleanField(default=1)
+
+    def __unicode__(self):
+        return "[EnrollmentBanned] %s: %s" % (self.email, self.is_active)
+
+
+class CourseEnrollmentBanned(TimeStampedModel):
+    """
+    This table contains email, course_Id, is_active status, expiry time till the ban ends
+
+    Purpose of this table is to provide information of users
+    that are banned from a course for certain/noncertain amount of time.
+    """
+    email = models.CharField(max_length=255, db_index=True)
+    course_id = CourseKeyField(db_index=True, max_length=255, blank=True)
+    is_active = models.BooleanField(default=1)
+    expiry = models.DateTimeField(null=True, blank=True)
+
+    class Meta(object):
+        unique_together = (('email', 'course_id'),)
+
+    def __unicode__(self):
+        return "[CourseEnrollmentBanned] %s: %s (%s)" % (self.email, self.course_id, self.created)
+
+    @classmethod
+    def is_expired(cls, user):
+        if user.expiry:
+            return user.expiry < datetime.now(UTC)
+
+        return False
