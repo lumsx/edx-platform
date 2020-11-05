@@ -87,7 +87,7 @@ from student.models import (
     email_exists_or_retired,
 )
 from student.signals import REFUND_ORDER
-from student.tasks import send_activation_email
+from student.tasks import send_activation_email, send_course_enrollment_email_for_user
 from student.text_me_the_app import TextMeTheAppFragmentView
 from util.request_rate_limiter import BadRequestRateLimiter, PasswordResetEmailRateLimiter
 from util.db import outer_atomic
@@ -406,6 +406,8 @@ def change_enrollment(request, check_access=True):
                 enroll_mode = CourseMode.auto_enroll_mode(course_id, available_modes)
                 if enroll_mode:
                     CourseEnrollment.enroll(user, course_id, check_access=check_access, mode=enroll_mode)
+                    site = get_current_site()
+                    send_course_enrollment_email_for_user.delay(site.id, user.id, request.POST.get('course_id'))
             except Exception:  # pylint: disable=broad-except
                 return HttpResponseBadRequest(_("Could not enroll"))
         handle_user_enrollment(course_id, user, action)
