@@ -123,26 +123,26 @@
             };
 
             StudentAdmin.prototype.display_all_courses_ban_results = function (dataFromServer){
-              let successful_user = dataFromServer.successful_results;
-              let result_display =studentadmin.$user_ban_results_from_all_courses;
+              var successful_user = dataFromServer.successful_results;
+              var result_display =studentadmin.$user_ban_results_from_all_courses;
               if (successful_user.length > 0) {
 
                 result_display.append('<h5> Successfully Banned Users </h5>');
                 result_display.append('<ul id="success_users" style="color: green"></ul>');
 
-                for (let i = 0, len = successful_user.length; i < len; ++i) {
-                  let user = successful_user[i];
+                for (var i = 0, len = successful_user.length; i < len; ++i) {
+                  var user = successful_user[i];
                   $('#success_users').append('<li><strong>' + user.identifier + '</strong></li>');
                 }
               }
 
-              let invalid_users = dataFromServer.failed_results;
+              var invalid_users = dataFromServer.failed_results;
               if (invalid_users.length > 0){
                 result_display.append('<h5> Not Successful attempt to Ban Users </h5>');
                 result_display.append('<ul id="failed_users" style="color: red"></ul>').find('ul');
 
-                for (let i = 0, len = invalid_users.length; i < len; ++i) {
-                     let user = invalid_users[i];
+                for (var i = 0, len = invalid_users.length; i < len; ++i) {
+                     var user = invalid_users[i];
                     $('#failed_users').append('<li><strong>' + user.identifier + '</strong>     reason: ' + user.reason + '</li>');
                  }
               }
@@ -187,26 +187,26 @@
             };
 
             StudentAdmin.prototype.display_ban_results = function (dataFromServer){
-              let successful_user = dataFromServer.successful_results;
-              let result_display =studentadmin.$user_ban_results_from_course;
+              var successful_user = dataFromServer.successful_results;
+              var result_display =studentadmin.$user_ban_results_from_course;
               if (successful_user.length > 0) {
 
                 result_display.append('<h5> Successfully Banned Users </h5>');
                 result_display.append('<ul id="all-success_users" style="color: green"></ul>');
 
-                for (let i = 0, len = successful_user.length; i < len; ++i) {
-                  let user = successful_user[i];
+                for (var i = 0, len = successful_user.length; i < len; ++i) {
+                  var user = successful_user[i];
                   $('#all-success_users').append('<li><strong>' + user.identifier + '</strong></li>');
                 }
               }
 
-              let invalid_users = dataFromServer.failed_results;
+              var invalid_users = dataFromServer.failed_results;
               if (invalid_users.length > 0){
                 result_display.append('<h5> Not Successful attempt to Ban Users </h5>');
                 result_display.append('<ul id="all-failed_users" style="color: red"></ul>').find('ul');
 
-                for (let i = 0, len = invalid_users.length; i < len; ++i) {
-                     let user = invalid_users[i];
+                for (var i = 0, len = invalid_users.length; i < len; ++i) {
+                     var user = invalid_users[i];
                     $('#all-failed_users').append('<li><strong>' + user.identifier + '</strong> reason: ' + user.reason + '</li>');
                  }
               }
