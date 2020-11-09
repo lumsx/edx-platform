@@ -87,13 +87,13 @@ from student.models import (
     email_exists_or_retired,
 )
 from student.signals import REFUND_ORDER
-from student.tasks import send_activation_email, send_course_enrollment_email_for_user
+from student.tasks import send_activation_email
 from student.text_me_the_app import TextMeTheAppFragmentView
 from util.request_rate_limiter import BadRequestRateLimiter, PasswordResetEmailRateLimiter
 from util.db import outer_atomic
 from util.json_request import JsonResponse
 from util.password_policy_validators import normalize_password, validate_password
-from edly_panel_app.helpers import handle_user_enrollment
+from openedx.features.lumsx_features.helpers import handle_course_enrollment
 
 
 log = logging.getLogger("edx.student")
@@ -406,11 +406,9 @@ def change_enrollment(request, check_access=True):
                 enroll_mode = CourseMode.auto_enroll_mode(course_id, available_modes)
                 if enroll_mode:
                     CourseEnrollment.enroll(user, course_id, check_access=check_access, mode=enroll_mode)
-                    site = get_current_site()
-                    send_course_enrollment_email_for_user.delay(site.id, user.id, request.POST.get('course_id'))
+                    handle_course_enrollment(course_id, user, action)
             except Exception:  # pylint: disable=broad-except
                 return HttpResponseBadRequest(_("Could not enroll"))
-        handle_user_enrollment(course_id, user, action)
         # If we have more than one course mode or professional ed is enabled,
         # then send the user to the choose your track page.
         # (In the case of no-id-professional/professional ed, this will redirect to a page that
@@ -432,8 +430,8 @@ def change_enrollment(request, check_access=True):
             return HttpResponseBadRequest(_("Your certificate prevents you from unenrolling from this course"))
 
         CourseEnrollment.unenroll(user, course_id)
+        handle_course_enrollment(course_id, user, action)
         REFUND_ORDER.send(sender=None, course_enrollment=enrollment)
-        handle_user_enrollment(course_id, user, action)
         return HttpResponse()
     else:
         return HttpResponseBadRequest(_("Enrollment action is invalid"))

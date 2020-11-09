@@ -2348,6 +2348,7 @@ INSTALLED_APPS = [
     # Edly apps
     'openedx.features.edly',
     'edly_panel_app',
+    'openedx.features.lumsx_features',
 ]
 
 ######################### CSRF #########################################
