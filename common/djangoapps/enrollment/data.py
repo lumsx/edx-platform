@@ -19,6 +19,7 @@ from enrollment.errors import (
 from enrollment.serializers import CourseEnrollmentSerializer, CourseSerializer
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from openedx.core.lib.exceptions import CourseNotFoundError
+from openedx.features.lumsx_features.helpers import handle_course_enrollment
 from student.models import (
     AlreadyEnrolledError,
     CourseEnrollment,
@@ -146,6 +147,7 @@ def create_course_enrollment(username, course_id, mode, is_active):
 
     try:
         enrollment = CourseEnrollment.enroll(user, course_key, check_access=True)
+        handle_course_enrollment(course_id, user, 'enroll')
         return _update_enrollment(enrollment, is_active=is_active, mode=mode)
     except NonExistentCourseError as err:
         raise CourseNotFoundError(text_type(err))
