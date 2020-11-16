@@ -97,5 +97,4 @@ urlpatterns = [
 
     # student banning
     url(r'change_student_course_access', api.change_student_access_status_for_course, name='change_student_course_access'),
-    url(r'change_student_all_courses_access', api.change_student_access_status_from_all_courses, name='change_student_all_courses_access')
 ]

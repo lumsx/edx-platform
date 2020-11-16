@@ -124,7 +124,6 @@ from student.models import (
     get_user_by_username_or_email,
     unique_id_for_user,
     is_email_retired,
-    EnrollmentBanned,
     CourseEnrollmentBanned
 
 )
@@ -3599,107 +3598,6 @@ def _create_error_response(request, msg):
     """
     return JsonResponse({"error": _(msg)}, 400)
 
-
-@ensure_csrf_cookie
-@cache_control(no_cache=True, no_store=True, must_revalidate=True)
-@require_level('staff')
-@require_http_methods(['POST'])
-@require_post_params(
-    action="'all-ban' or 'all-unban'",
-    identifiers="encoded stringified list of emails and/or usernames and expiry time seperated by newlines")
-def change_student_access_status_from_all_courses(request, course_id):
-    """
-       Ban the student from the all courses.
-       :param request: HttpRequest object,
-       :param course_id: course identifier for the course form staff is accessing to ban,
-       :return: JsonResponse object containing the success/faliure message and exception data
-       """
-    allowed_actions = ['all-ban', 'all-unban']
-    action = request.POST.get('action')
-
-    if action not in allowed_actions:
-        return JsonResponse({'message': 'Bad Action type'}, status=400)
-
-    usernames_or_emails = re.split(r'[\n,]', request.POST.get('identifiers'))
-    usernames_or_emails = list(set([u.strip() for u in usernames_or_emails if u]))
-
-    if action == 'all-ban':
-        return _set_student_all_ban_status(usernames_or_emails)
-
-    elif action == 'all-unban':
-        return _remove_student_all_ban_status(usernames_or_emails)
-
-
-def _set_student_all_ban_status(usernames_or_emails):
-    successful_usernames, invalid_usernames = [], []
-    users = User.objects.filter(
-        Q(email__in=usernames_or_emails) | Q(username__in=usernames_or_emails)
-    )
-
-    for user in users:
-        student_provided_info = user.username if user.username in usernames_or_emails else user.email
-        usernames_or_emails.remove(student_provided_info)
-
-        banned_user, created = EnrollmentBanned.objects.get_or_create(email=user.email)
-
-        if not created:
-            banned_user.is_active = True
-            banned_user.save(update_fields=['is_active'])
-
-        successful_usernames.append({'identifier': student_provided_info, 'reason': ''})
-
-    for raw_user in usernames_or_emails:
-        if re.search(r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$', raw_user):
-            banned_user, created = EnrollmentBanned.objects.get_or_create(email=raw_user)
-            banned_user.is_active = True
-            banned_user.save(update_fields=['is_active'])
-            successful_usernames.append({'identifier': raw_user, 'reason': ''})
-        else:
-            invalid_usernames.append({'identifier': raw_user, 'reason': 'username does not exist and cannot be added'})
-
-    results = {
-        'action': 'all-ban',
-        'failed_results': invalid_usernames,
-        'successful_results': successful_usernames
-    }
-
-    return JsonResponse(results)
-
-
-def _remove_student_all_ban_status(usernames_or_emails):
-    successful_usernames, invalid_usernames = [], []
-    registered_users_emails = User.objects.filter(
-        Q(email__in=usernames_or_emails) | Q(username__in=usernames_or_emails)
-    )
-
-    registered_users_emails_values = registered_users_emails.values_list('email', flat=True)
-    EnrollmentBanned.objects.filter(email__in=registered_users_emails_values).update(is_active=False)
-
-    for user in registered_users_emails:
-        student_provided_info = user.username if user.username in usernames_or_emails else user.email
-        usernames_or_emails.remove(student_provided_info)
-        successful_usernames.append({'identifier': student_provided_info, 'reason': ''})
-
-    unregistered_emails = []
-
-    for raw_user in usernames_or_emails:
-        if re.search(r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$', raw_user):
-            unregistered_emails.append(raw_user)
-            successful_usernames.append({'identifier': raw_user, 'reason': ''})
-        else:
-            invalid_usernames.append(
-                {'identifier': raw_user, 'reason': 'username does not exist and cannot be added'}
-            )
-
-    EnrollmentBanned.objects.filter(email__in=unregistered_emails).update(is_active=False)
-
-    results = {
-        'action': 'all-unban',
-        'failed_results': invalid_usernames,
-        'successful_results': successful_usernames
-    }
-
-    return JsonResponse(results)
 
 
 @ensure_csrf_cookie

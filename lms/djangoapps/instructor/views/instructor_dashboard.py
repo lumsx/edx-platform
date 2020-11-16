@@ -597,8 +597,6 @@ def _section_student_admin(course, access):
         'spoc_gradebook_url': reverse('spoc_gradebook', kwargs={'course_id': unicode(course_key)}),
         'change_student_course_access_url': reverse('change_student_course_access',
                                                     kwargs={'course_id': unicode(course_key)}),
-        'change_student_all_courses_access_url': reverse('change_student_all_courses_access',
-                                                    kwargs={'course_id': unicode(course_key)}),
     }
     if waffle_flags()[WRITABLE_GRADEBOOK].is_enabled(course_key) and settings.WRITABLE_GRADEBOOK_URL:
         section_data['writable_gradebook_url'] = urljoin(settings.WRITABLE_GRADEBOOK_URL, '/' + text_type(course_key))
