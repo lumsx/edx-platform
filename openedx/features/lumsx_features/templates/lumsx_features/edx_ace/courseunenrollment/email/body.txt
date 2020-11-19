@@ -1,8 +1,8 @@
-{% load i18n %}{% autoescape off %}{% blocktrans %}Dear {{ full_name }}{% endblocktrans %}
+{% load i18n %}{% autoescape off %}{% blocktrans %}Dear {{ username }}{% endblocktrans %}
 
 {% blocktrans %}You have been unenrolled from {{ course_name }} at {{ site_name }}. This course will no longer appear on your {{ site_name }} dashboard.{% endblocktrans %}
 
 {% blocktrans %}Your other courses have not been affected.{% endblocktrans %}
 
 ----
-{% blocktrans %}This email was automatically sent from {{ site_name }} to {{ full_name }}{% endblocktrans %}{% endautoescape %}
+{% blocktrans %}This email was automatically sent from {{ site_name }} to {{ username }}{% endblocktrans %}{% endautoescape %}
