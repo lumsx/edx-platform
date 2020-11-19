@@ -38,7 +38,7 @@ def send_course_enrollment_email_for_user(self, site_id, user_id, course_id, mes
             'request': request,
             'platform_name': configuration_helpers.get_value('PLATFORM_NAME', settings.PLATFORM_NAME),
             'site_name': configuration_helpers.get_value('SITE_NAME', settings.SITE_NAME),
-            'full_name': user.get_full_name(),
+            'username': user.username,
             'course_name': course.display_name,
             'course_url': '{protocol}://{site}{link}'.format(
                 protocol='https' if request.is_secure() else 'http',
