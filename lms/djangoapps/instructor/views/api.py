@@ -3633,12 +3633,13 @@ def change_student_access_status_for_course(request, course_id):
 def _ban_student_from_course(course_id, usernames_expiry_key_value):
     successful_usernames, invalid_usernames = [], []
     usernames_or_emails = list(usernames_expiry_key_value.keys())
-    users = User.objects.filter(
-        Q(email__in=usernames_or_emails) | Q(username__in=usernames_or_emails)
-    )
+    users = User.objects.filter(Q(email__in=usernames_or_emails) | Q(username__in=usernames_or_emails))
 
     for user in users:
-        student_provided_info = user.username if user.username in usernames_expiry_key_value else user.email
+        if not set([user.username, user.email]).intersection(set(usernames_or_emails)):
+            continue
+
+        student_provided_info = user.username if user.username in usernames_or_emails else user.email
         usernames_or_emails.remove(student_provided_info)
         expiry = usernames_expiry_key_value.get(user.username)
 
@@ -3688,25 +3689,43 @@ def _unban_student_from_course(course_id, usernames_expiry_key_value):
     successful_usernames, invalid_usernames = [], []
     usernames_or_emails = list(usernames_expiry_key_value.keys())
 
-    registered_users_emails = User.objects.filter(
+    registered_users = User.objects.filter(
         Q(email__in=usernames_or_emails) | Q(username__in=usernames_or_emails)
     )
 
-    registered_users_emails_values = registered_users_emails.values_list('email', flat=True)
+    registered_user_emails = list(registered_users.values_list('email', flat=True))
+    banned_users = CourseEnrollmentBanned.objects.filter(
+        email__in=usernames_or_emails + registered_user_emails
+    )
+    unregistered_emails = banned_users.values_list('email', flat=True)
+    banned_users.update(is_active=False, expiry=None)
 
-    CourseEnrollmentBanned.objects.filter(
-        email__in=registered_users_emails_values,
-        course_id=course_id
-    ).update(is_active=False, expiry=None)
-
-    for user in registered_users_emails:
+    # users with valid usernames
+    for user in registered_users:
         student_provided_info = user.username if user.username in usernames_expiry_key_value else user.email
+
+        if student_provided_info not in usernames_or_emails:
+            continue
+
         usernames_or_emails.remove(student_provided_info)
         successful_usernames.append({'identifier': student_provided_info, 'reason': ''})
 
+    # user whom email was banned but are still unregistered
+    for email in unregistered_emails:
+        if email not in usernames_or_emails:
+            continue
+
+        usernames_or_emails.remove(email)
+        successful_usernames.append({'identifier': email, 'reason': ''})
+
     for raw_user in usernames_or_emails:
+        reason = 'username does not exist already'
+
+        if re.search(r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$', raw_user):
+            reason = 'email does not exist already'
+
         invalid_usernames.append(
-            {'identifier': raw_user, 'reason': 'username does not exist and cannot be added'}
+            {'identifier': raw_user, 'reason': reason}
         )
 
     results = {
@@ -3736,9 +3755,9 @@ def _format_student_info_to_key_value(user_and_expiry_raw):
     user_and_expiry_raw = re.split(r'\n', user_and_expiry_raw)
 
     for raw_user in user_and_expiry_raw:
-        raw_user = raw_user.strip().split(',')
+        raw_user = [r for r in raw_user.split(',') if r.strip()]
 
-        if not raw_user[0]:
+        if not raw_user or not raw_user[0]:
             continue
 
         expiry = None
@@ -3752,6 +3771,9 @@ def _format_student_info_to_key_value(user_and_expiry_raw):
                     expiry = expiry_date
             else:
                 expiry = 'invalid'
+
+        if re.search(r'^[a-zA-Z]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', raw_user[0]):
+            raw_user[0] = raw_user[0].lower()
 
         student_info[raw_user[0]] = expiry
 
