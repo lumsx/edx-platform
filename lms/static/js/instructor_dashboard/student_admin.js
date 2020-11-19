@@ -83,16 +83,16 @@
             this.$btn_ban_user_from_course.click(function () {
               studentadmin.$user_ban_results_from_course.empty();
               studentadmin.$user_ban_error_section.empty();
-              studentadmin.fetch_ban_unban_user();
+              studentadmin.fetch_ban_unban_user('ban');
             });
 
             this.$btn_unban_user_from_course.click(function () {
               studentadmin.$user_ban_results_from_course.empty();
               studentadmin.$user_ban_error_section.empty();
-              studentadmin.fetch_ban_unban_user();
+              studentadmin.fetch_ban_unban_user('unban');
             });
 
-            StudentAdmin.prototype.fetch_ban_unban_user = function (){
+            StudentAdmin.prototype.fetch_ban_unban_user = function (action){
               if (!studentadmin.$user_ban_from_course_info_field.val()) {
                 return studentadmin.$user_ban_error_section.text(
                   gettext('Please enter at least one email address/username')
@@ -104,11 +104,11 @@
                   dataType: 'json',
                   url: $(event.target).data('endpoint'),
                   data:  {
-                      action: $(event.target).data('action'),
+                      action: action,
                       identifiers: studentadmin.$user_ban_from_course_info_field.val(),
                   },
                   success: studentadmin.clear_errors_then(function (data) {
-                    return studentadmin.display_ban_results(data, $(event.target).data('action'));
+                    return studentadmin.display_ban_results(data, action);
                   }),
                   error: statusAjaxError(function () {
                     return studentadmin.$user_ban_error_section.text(
@@ -122,7 +122,6 @@
               var successful_user = dataFromServer.successful_results;
               var result_display =studentadmin.$user_ban_results_from_course;
               if (successful_user.length > 0) {
-
                 result_display.append('<h5> Successfully ' + action + 'ed Users </h5>');
                 result_display.append('<ul id="all-success_users" style="color: green"></ul>');
 
