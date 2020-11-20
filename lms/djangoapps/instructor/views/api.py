@@ -158,6 +158,7 @@ TASK_SUBMISSION_OK = 'created'
 SUCCESS_MESSAGE_TEMPLATE = _("The {report_type} report is being created. "
                              "To view the status of the report, see Pending Tasks below.")
 
+EMAIL_VALIDITY_RE = r'[\w_.+-]+@[\w-]+\.[\w\-.]+'
 
 def common_exceptions_400(func):
     """
@@ -3663,7 +3664,8 @@ def _ban_student_from_course(course_id, usernames_expiry_key_value):
         if not check_expiry_validity(raw_user, expiry, invalid_usernames):
             continue
 
-        if re.search(r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$', raw_user):
+        raw_email = re.findall(EMAIL_VALIDITY_RE, raw_user)
+        if raw_email and raw_email[0] == raw_user:
             banned_user, created = CourseEnrollmentBanned.objects.get_or_create(
                 email=raw_user,
                 course_id=course_id)
@@ -3721,7 +3723,8 @@ def _unban_student_from_course(course_id, usernames_expiry_key_value):
     for raw_user in usernames_or_emails:
         reason = 'username does not exist already'
 
-        if re.search(r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$', raw_user):
+        raw_email = re.findall(EMAIL_VALIDITY_RE, raw_user)
+        if raw_email and raw_email[0] == raw_user:
             reason = 'email does not exist already'
 
         invalid_usernames.append(
@@ -3772,7 +3775,8 @@ def _format_student_info_to_key_value(user_and_expiry_raw):
             else:
                 expiry = 'invalid'
 
-        if re.search(r'^[a-zA-Z]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', raw_user[0]):
+        raw_email = re.findall(EMAIL_VALIDITY_RE, raw_user[0])
+        if raw_email and raw_email[0] == raw_user[0]:
             raw_user[0] = raw_user[0].lower()
 
         student_info[raw_user[0]] = expiry
