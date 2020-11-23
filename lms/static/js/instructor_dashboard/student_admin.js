@@ -105,7 +105,7 @@
                   url: $(event.target).data('endpoint'),
                   data:  {
                       action: action,
-                      identifiers: studentadmin.$user_ban_from_course_info_field.val(),
+                      identifiers: studentadmin.$user_ban_from_course_info_field.val().toLowerCase(),
                   },
                   success: studentadmin.clear_errors_then(function (data) {
                     return studentadmin.display_ban_results(data, action);
