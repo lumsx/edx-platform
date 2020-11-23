@@ -3758,7 +3758,7 @@ def _format_student_info_to_key_value(user_and_expiry_raw):
     user_and_expiry_raw = re.split(r'\n', user_and_expiry_raw)
 
     for raw_user in user_and_expiry_raw:
-        raw_user = [r for r in raw_user.split(',') if r.strip()]
+        raw_user = [r.strip() for r in raw_user.split(',') if r.strip()]
 
         if not raw_user or not raw_user[0]:
             continue
