@@ -1,7 +1,8 @@
 """
 Views for the course home page.
 """
-
+from django.contrib.auth.models import AnonymousUser
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.template.context_processors import csrf
 from django.template.loader import render_to_string
@@ -12,7 +13,7 @@ from opaque_keys.edx.keys import CourseKey
 from web_fragments.fragment import Fragment
 
 from course_modes.models import get_cosmetic_verified_display_price
-from courseware.access import has_access
+from courseware.access import has_access, is_banned_from_course
 from courseware.courses import can_self_enroll_in_course, get_course_info_section, get_course_with_access
 from lms.djangoapps.commerce.utils import EcommerceService
 from lms.djangoapps.course_goals.api import (
@@ -58,6 +59,10 @@ class CourseHomeView(CourseTabView):
         """
         Displays the home page for the specified course.
         """
+        course_key = CourseKey.from_string(course_id)
+        if not request.user.is_anonymous and course_key and is_banned_from_course(request.user, course_key):
+            return redirect(reverse('student_access_denied'))
+
         return super(CourseHomeView, self).get(request, course_id, 'courseware', **kwargs)
 
     def uses_bootstrap(self, request, course, tab):
