@@ -38,7 +38,7 @@ from six import text_type
 import shoppingcart
 import survey.views
 from course_modes.models import CourseMode, get_course_prices
-from courseware.access import has_access, has_ccx_coach_role
+from courseware.access import has_access, has_ccx_coach_role, is_banned_from_course
 from courseware.access_utils import check_course_open_for_learner
 from courseware.courses import (
     can_self_enroll_in_course,
@@ -766,6 +766,10 @@ def course_about(request, course_id):
     Display the course's about page.
     """
     course_key = CourseKey.from_string(course_id)
+
+    # if the user is banned
+    if not request.user.is_anonymous and course_key and is_banned_from_course(request.user, course_key):
+        return redirect(reverse('student_access_denied'))
 
     # If a user is not able to enroll in a course then redirect
     # them away from the about page to the dashboard.

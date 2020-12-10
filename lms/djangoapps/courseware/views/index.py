@@ -8,8 +8,9 @@ import logging
 import urllib
 
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.auth.views import redirect_to_login
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.http import Http404
 from django.template.context_processors import csrf
@@ -48,7 +49,7 @@ from xmodule.modulestore.django import modulestore
 from xmodule.course_module import COURSE_VISIBILITY_PUBLIC
 from xmodule.x_module import PUBLIC_VIEW, STUDENT_VIEW
 from .views import CourseTabView
-from ..access import has_access
+from ..access import has_access, is_banned_from_course
 from ..courses import check_course_access, get_course_with_access, get_current_child, get_studio_url
 from ..entrance_exams import (
     course_has_entrance_exam,
@@ -105,6 +106,9 @@ class CoursewareIndex(View):
 
         if not (request.user.is_authenticated or self.enable_unenrolled_access):
             return redirect_to_login(request.get_full_path())
+
+        if not request.user.is_anonymous and self.course_key and is_banned_from_course(request.user, self.course_key):
+            return redirect(reverse('student_access_denied'))
 
         self.original_chapter_url_name = chapter
         self.original_section_url_name = section

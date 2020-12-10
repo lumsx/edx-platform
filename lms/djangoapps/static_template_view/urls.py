@@ -27,6 +27,9 @@ urlpatterns = [
 
     # Press releases
     url(r'^press/([_a-zA-Z0-9-]+)$', views.render_press_release, name='press_release'),
+
+    # lumsx
+    url(r'^student_access_denied$', views.render, {'template': 'access_denied.html'}, name="student_access_denied")
 ]
 
 # Only enable URLs for those marketing links actually enabled in the
