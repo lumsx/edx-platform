@@ -139,7 +139,7 @@ def has_access(user, action, obj, course_key=None):
     if not user:
         user = AnonymousUser()
 
-    if user != AnonymousUser() and course_key and _is_banned_from_course(user, course_key):
+    if not user.is_anonymous and course_key and is_banned_from_course(user, course_key):
         return ACCESS_DENIED
 
     # Preview mode is only accessible by staff.
@@ -180,7 +180,7 @@ def has_access(user, action, obj, course_key=None):
                     .format(type(obj)))
 
 
-def _is_banned_from_course(user, course_key):
+def is_banned_from_course(user, course_key):
     """
     Checks if the user is banned from the course its trying to access
     """
