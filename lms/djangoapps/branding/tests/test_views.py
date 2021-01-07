@@ -1,5 +1,6 @@
 # encoding: utf-8
 """Tests of Branding API views. """
+import copy
 import json
 import urllib
 
@@ -315,3 +316,26 @@ class TestIndex(SiteMixin, TestCase):
         self.client.login(username=self.user.username, password="password")
         response = self.client.get(reverse("dashboard"))
         self.assertIn(self.site_configuration_other.values["MKTG_URLS"]["ROOT"], response.content)
+
+    def test_index_redirects_to_signin_with_site_override(self):
+        """ Test index view redirects if ALWAYS_REDIRECT_HOMEPAGE_TO_SIGNIN_FOR_ANONYMOUS_USER is set in SiteConfiguration """
+        self.use_site(self.site_for_signin_redirection)
+        response = self.client.get(reverse("root"))
+        self.assertRedirects(
+            response,
+            reverse('signin_user'),
+            fetch_redirect_response=False
+        )
+
+    def test_index_redirects_to_signin_with_feature_flag(self):
+        """ Test index view redirects if ALWAYS_REDIRECT_HOMEPAGE_TO_SIGNIN_FOR_ANONYMOUS_USER feature flag is set """
+        self.use_site(self.site_for_signin_redirection)
+        feature_flags = copy.deepcopy(settings.FEATURES)
+        feature_flags['ALWAYS_REDIRECT_HOMEPAGE_TO_SIGNIN_FOR_ANONYMOUS_USER'] = True
+        with self.settings(FEATURES=feature_flags):
+            response = self.client.get(reverse("root"))
+            self.assertRedirects(
+                response,
+                reverse('signin_user'),
+                fetch_redirect_response=False
+            )

@@ -52,6 +52,12 @@ def index(request):
             req_new['next'] = reverse('dashboard')
             request.GET = req_new
         return ssl_login(request)
+    
+    if request.user.is_anonymous:
+        if configuration_helpers.get_value(
+                'ALWAYS_REDIRECT_HOMEPAGE_TO_SIGNIN_FOR_ANONYMOUS_USER',
+                settings.FEATURES.get('ALWAYS_REDIRECT_HOMEPAGE_TO_SIGNIN_FOR_ANONYMOUS_USER', False)):
+            return redirect(reverse('signin_user'))
 
     enable_mktg_site = configuration_helpers.get_value(
         'ENABLE_MKTG_SITE',

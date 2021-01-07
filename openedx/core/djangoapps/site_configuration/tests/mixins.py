@@ -41,6 +41,18 @@ class SiteMixin(object):
             }
         )
 
+        self.site_for_signin_redirection = SiteFactory.create(
+            domain='fake.site.domain',
+            name='fake.site.name'
+        )
+        self.site_configuration_for_signin_redirection = SiteConfigurationFactory.create(
+            site=self.site_for_signin_redirection,
+            values={
+                "SITE_NAME": self.site_for_signin_redirection.domain,
+                "ALWAYS_REDIRECT_HOMEPAGE_TO_SIGNIN_FOR_ANONYMOUS_USER": True,
+            }
+        )
+
         # Initialize client with default site domain
         self.use_site(self.site)
 
