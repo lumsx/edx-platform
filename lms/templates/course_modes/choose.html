@@ -76,7 +76,6 @@ from openedx.core.djangolib.markup import HTML, Text
                             ${title_content}
                         </h3>
                     </header>
-
                     <form class="form-register-choose" method="post" name="enrollment_mode_form" id="enrollment_mode_form">
                         <%
                         b_tag_kwargs = {'b_start': HTML('<b>'), 'b_end': HTML('</b>')}
@@ -122,7 +121,7 @@ from openedx.core.djangolib.markup import HTML, Text
                                                     <ul class="list-actions">
                                                         <li class="action action-select">
                                                             <input type="hidden" name="contribution" value="${min_price}" />
-                                                            <input type="submit" name="verified_mode" value="${_('Pursue a Verified Certificate')} ($${min_price} USD)" />
+                                                            <input type="submit" name="verified_mode" value="${_('Pursue a Verified Certificate')} (${currency_symbol}${min_price})" />
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -167,9 +166,9 @@ from openedx.core.djangolib.markup import HTML, Text
                                                         <li class="action action-select">
                                                             <input type="hidden" name="contribution" value="${min_price}" />
                                                             % if content_gating_enabled or course_duration_limit_enabled:
-                                                                <input type="submit" name="verified_mode" value="${_('Pursue the Verified Track')} ($${min_price} USD)" />
+                                                                <input type="submit" name="verified_mode" value="${_('Pursue the Verified Track')} (${currency_symbol}${min_price})" />
                                                             % else:
-                                                                <input type="submit" name="verified_mode" value="${_('Pursue a Verified Certificate')} ($${min_price} USD)" />
+                                                                <input type="submit" name="verified_mode" value="${_('Pursue a Verified Certificate')} (${currency_symbol}${min_price})" />
                                                             % endif
                                                         </li>
                                                     </ul>
