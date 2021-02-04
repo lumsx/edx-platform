@@ -35,11 +35,6 @@
                         // If so, redirect to a page explaining to the user
                         // why they were blocked.
                         this.redirect(responseData.user_message_url);
-                    } else if (jqXHR.status === 409) {
-                        // 409 is returned when user is already enrolled
-                        // adding this for lumsx particularly it checks if the user already
-                        // enrolled it will redirect it to dashboard rather than choose mode
-                        this.redirect('/dashboard');
                     } else {
                         // Otherwise, redirect the user to the next page.
                         if (redirectUrl) {
