@@ -88,7 +88,7 @@ def get_certificate_description(mode, certificate_type, platform_name):
     return certificate_type_description
 
 
-def _update_certificate_context(context, course, user_certificate, platform_name):
+def _update_certificate_context(context, course, user_certificate, platform_name, parent_organization_name):
     """
     Build up the certificate web view context using the provided values
     (Helper method to keep the view clean)
@@ -122,10 +122,10 @@ def _update_certificate_context(context, course, user_certificate, platform_name
     )
 
     # Translators:  This text is bound to the HTML 'title' element of the page and appears in the browser title bar
-    context['document_title'] = _("{partner_short_name} {course_number} Certificate | {platform_name}").format(
+    context['document_title'] = _("{partner_short_name} {course_number} Certificate | {parent_organization_name}").format(
         partner_short_name=context['organization_short_name'],
         course_number=context['course_number'],
-        platform_name=platform_name
+        parent_organization_name=parent_organization_name
     )
 
     # Translators:  This text fragment appears after the student's name (displayed in a large font) on the certificate
@@ -494,6 +494,7 @@ def render_html_view(request, user_id, course_id):
 
     preview_mode = request.GET.get('preview', None)
     platform_name = configuration_helpers.get_value("platform_name", settings.PLATFORM_NAME)
+    parent_organization_name = configuration_helpers.get_value("parent_organization_name", "parent organization name here")
     configuration = CertificateHtmlViewConfiguration.get_config()
 
     # Kick the user back to the "Invalid" screen if the feature is disabled globally
@@ -593,7 +594,7 @@ def render_html_view(request, user_id, course_id):
         _update_social_context(request, context, course, user, user_certificate, platform_name)
 
         # Append/Override the existing view context values with certificate specific values
-        _update_certificate_context(context, course, user_certificate, platform_name)
+        _update_certificate_context(context, course, user_certificate, platform_name, parent_organization_name)
 
         # Append badge info
         _update_badge_context(context, course, user)
