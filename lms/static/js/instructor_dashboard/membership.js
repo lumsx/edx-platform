@@ -301,12 +301,12 @@ such that the value can be defined later than this assignment (file load order).
                     el: uploadElement,
                     title: gettext(
                       'Bulk enroll students to this course by uploading a CSV file that contains the email column. ' +
-                      'Enrollment emails will be sent to registered students and registration invitation emails will be ' +
+                      'Enrolment emails will be sent to registered students and registration invitation emails will be ' +
                       'sent to new users.'
                     ),
                     inputLabel: gettext('Choose a .csv file'),
                     inputTip: gettext('Only properly formatted .csv files will be accepted with max file size of 2 MB.'),
-                    submitButtonText: gettext('Upload File and Bulk Enroll Students'),
+                    submitButtonText: gettext('Upload File and Bulk Enrol Students'),
                     extensions: '.csv',
                     url: uploadElement.data('url'),
                     successNotification: function(file, event, data) {
@@ -815,7 +815,7 @@ such that the value can be defined later than this assignment (file load order).
             }
             if (allowed.length && emailStudents) {
                 // Translators: A list of users appears after this sentence;
-                renderList(gettext('Successfully sent enrollment emails to the following users. They will be allowed to enroll once they register:'), (function() {  // eslint-disable-line max-len
+                renderList(gettext('Successfully sent Enrolment emails to the following users. They will be allowed to enroll once they register:'), (function() {  // eslint-disable-line max-len
                     var k, len2, results;
                     results = [];
                     for (k = 0, len2 = allowed.length; k < len2; k++) {
@@ -839,7 +839,7 @@ such that the value can be defined later than this assignment (file load order).
             }
             if (autoenrolled.length && emailStudents) {
                 // Translators: A list of users appears after this sentence;
-                renderList(gettext('Successfully sent enrollment emails to the following users. They will be enrolled once they register:'), (function() {  // eslint-disable-line max-len
+                renderList(gettext('Successfully sent Enrolment emails to the following users. They will be enrolled once they register:'), (function() {  // eslint-disable-line max-len
                     var k, len2, results;
                     results = [];
                     for (k = 0, len2 = autoenrolled.length; k < len2; k++) {

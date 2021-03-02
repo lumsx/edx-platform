@@ -536,7 +536,7 @@ class Staffing(SysadminDashboardView):
         datatable = dict(header=[_('Course Name'), _('course_id'),
                                  _('# enrolled'), _('# staff'),
                                  _('instructors')],
-                         title=_('Enrollment information for all courses'),
+                         title=_('Enrolment information for all courses'),
                          data=data)
         context = {
             'datatable': datatable,

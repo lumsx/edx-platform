@@ -761,7 +761,7 @@ class EnrollmentListView(APIView, ApiKeyPermissionMixIn):
                     # if the requester wanted to deactivate but specified the wrong mode, fail
                     # the request (on the assumption that the requester had outdated information
                     # about the currently active enrollment).
-                    msg = u"Enrollment mode mismatch: active mode={}, requested mode={}. Won't deactivate.".format(
+                    msg = u"Enrolment mode mismatch: active mode={}, requested mode={}. Won't deactivate.".format(
                         enrollment["mode"], mode
                     )
                     log.warning(msg)

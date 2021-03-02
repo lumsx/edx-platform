@@ -26,9 +26,9 @@ block_is_unit = is_unit(xblock)
                 %endif
                 % if settings.FEATURES.get('ENABLE_ENROLLMENT_TRACK_USER_PARTITION'):
                     % if block_is_unit:
-                        <p>${_('You can restrict access to this unit to learners in specific enrollment tracks or content groups.')}</p>
+                        <p>${_('You can restrict access to this unit to learners in specific enrolment tracks or content groups.')}</p>
                     % else:
-                        <p>${_('You can restrict access to this component to learners in specific enrollment tracks or content groups.')}</p>
+                        <p>${_('You can restrict access to this component to learners in specific enrolment tracks or content groups.')}</p>
                     % endif
                 % else:
                     % if block_is_unit:

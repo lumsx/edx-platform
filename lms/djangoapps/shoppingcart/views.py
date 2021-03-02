@@ -465,7 +465,7 @@ def use_registration_code(course_reg, user):
     if not course_reg.is_valid:
         log.warning(u"The enrollment code (%s) is no longer valid.", course_reg.code)
         return HttpResponseBadRequest(
-            _("This enrollment code ({enrollment_code}) is no longer valid.").format(
+            _("This enrolment code ({enrollment_code}) is no longer valid.").format(
                 enrollment_code=course_reg.code
             )
         )
@@ -473,7 +473,7 @@ def use_registration_code(course_reg, user):
     if RegistrationCodeRedemption.is_registration_code_redeemed(course_reg.code):
         log.warning(u"This enrollment code ({%s}) has already been used.", course_reg.code)
         return HttpResponseBadRequest(
-            _("This enrollment code ({enrollment_code}) is not valid.").format(
+            _("This enrolment code ({enrollment_code}) is not valid.").format(
                 enrollment_code=course_reg.code
             )
         )

@@ -128,7 +128,7 @@ def _register_course_home_messages(request, course, user_access, course_start_da
         CourseHomeMessages.register_info_message(
             request,
             Text(_(
-                '{open_enroll_link}Enroll now{close_enroll_link} to access the full course.'
+                '{open_enroll_link}Enrol now{close_enroll_link} to access the full course.'
             )).format(
                 open_enroll_link=HTML('<button class="enroll-btn btn-link">'),
                 close_enroll_link=HTML('</button>')

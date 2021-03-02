@@ -682,7 +682,7 @@ class CourseFields(object):
     )
 
     max_student_enrollments_allowed = Integer(
-        display_name=_("Course Maximum Student Enrollment"),
+        display_name=_("Course Maximum Student Enrolment"),
         help=_(
             "Enter the maximum number of students that can enroll in the course. To allow an unlimited number of "
             "students, enter null."

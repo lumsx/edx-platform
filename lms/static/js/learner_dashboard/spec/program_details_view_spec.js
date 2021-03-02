@@ -624,7 +624,7 @@ describe('Program Details Header View', () => {
     view.render();
     expect(view.$('.run-select')[0].options.length).toEqual(2);
     expect($(view.$('.select-choice')[0]).attr('for')).toEqual($(view.$('.run-select')[0]).attr('id'));
-    expect($(view.$('.enroll-button button')[0]).text().trim()).toEqual('Enroll Now');
+    expect($(view.$('.enroll-button button')[0]).text().trim()).toEqual('Enrol Now');
   });
 
   it('should send analytic event when purchase button clicked', () => {

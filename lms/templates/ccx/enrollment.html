@@ -5,7 +5,7 @@ from django.utils.translation import pgettext
 from openedx.core.djangolib.markup import HTML, Text
 %>
 
-<h2 class="hd hd-2">${_("Enrollment")}</h2>
+<h2 class="hd hd-2">${_("Enrolment")}</h2>
 <div class="batch-enrollment-ccx">
   <form method="POST" action="ccx-manage-students">
   <input type="hidden" name="csrfmiddlewaretoken" value="${ csrf_token }">
@@ -18,8 +18,8 @@ from openedx.core.djangolib.markup import HTML, Text
 
 
   <div class="enroll-option">
-    <input type="checkbox" name="auto-enroll" id="auto-enroll" value="Auto-Enroll" checked="yes" aria-describedby="auto-enroll-helper" disabled>
-    <label style="display:inline" for="auto-enroll">${_("Auto Enroll")}</label>
+    <input type="checkbox" name="auto-enroll" id="auto-enroll" value="Auto-Enrol" checked="yes" aria-describedby="auto-enroll-helper" disabled>
+    <label style="display:inline" for="auto-enroll">${_("Auto Enrol")}</label>
     <div class="hint auto-enroll-hint">
       <span class="hint-caret"></span>
       <p class="text-helper" id="auto-enroll-helper">
@@ -28,7 +28,7 @@ from openedx.core.djangolib.markup import HTML, Text
         em_end=HTML('</em>'),
         platform_name=settings.PLATFORM_NAME,
     )}
-	${Text(_("If this option is left {em_start}unchecked{em_end}, users who have not yet registered for {platform_name} will not be enrolled, but will be allowed to enroll once they make an account.")).format(
+	${Text(_("If this option is left {em_start}unchecked{em_end}, users who have not yet registered for {platform_name} will not be enrolled, but will be allowed to enrol once they make an account.")).format(
         em_start=HTML('<em>'),
         em_end=HTML('</em>'),
         platform_name=settings.PLATFORM_NAME,
@@ -54,7 +54,7 @@ from openedx.core.djangolib.markup import HTML, Text
   </div>
 
   <div>
-    <input type="submit" name="enrollment-button" class="enrollment-button" value="${pgettext('someone','Enroll')}">
+    <input type="submit" name="enrollment-button" class="enrollment-button" value="${pgettext('someone','Enrol')}">
     <input type="submit" name="enrollment-button" class="enrollment-button" value="${_("Unenroll")}">
   </div>
   <div class="request-response"></div>

@@ -37,7 +37,7 @@ def look_up_registration_code(request, course_id):
             'is_registration_code_exists': False,
             'is_registration_code_valid': False,
             'is_registration_code_redeemed': False,
-            'message': _('The enrollment code ({code}) was not found for the {course_name} course.').format(
+            'message': _('The enrolment code ({code}) was not found for the {course_name} course.').format(
                 code=code, course_name=course.display_name
             )
         }, status=400)  # status code 200: OK by default
@@ -70,15 +70,15 @@ def registration_code_details(request, course_id):
     action_type = request.POST.get('action_type')
     course = get_course_by_id(course_key, depth=0)
     action_type_messages = {
-        'invalidate_registration_code': _('This enrollment code has been canceled. It can no longer be used.'),
-        'unredeem_registration_code': _('This enrollment code has been marked as unused.'),
-        'validate_registration_code': _('The enrollment code has been restored.')
+        'invalidate_registration_code': _('This enrolment code has been canceled. It can no longer be used.'),
+        'unredeem_registration_code': _('This enrolment code has been marked as unused.'),
+        'validate_registration_code': _('The enrolment code has been restored.')
     }
     try:
         registration_code = CourseRegistrationCode.objects.get(code=code)
     except CourseRegistrationCode.DoesNotExist:
         return JsonResponse({
-            'message': _('The enrollment code ({code}) was not found for the {course_name} course.').format(
+            'message': _('The enrolment code ({code}) was not found for the {course_name} course.').format(
                 code=code, course_name=course.display_name
             )}, status=400)
 
@@ -97,7 +97,7 @@ def registration_code_details(request, course_id):
         code_redemption = RegistrationCodeRedemption.get_registration_code_redemption(code, course_key)
         if code_redemption is None:
             return JsonResponse({
-                'message': _('The redemption does not exist against enrollment code ({code}).').format(
+                'message': _('The redemption does not exist against enrolment code ({code}).').format(
                     code=code)}, status=400)
 
         delete_redemption_entry(request, code_redemption, course_key)

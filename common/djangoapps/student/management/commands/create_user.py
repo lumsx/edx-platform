@@ -30,7 +30,7 @@ class Command(TrackedCommand):
                             metavar='ENROLLMENT_MODE',
                             default='honor',
                             choices=('audit', 'verified', 'honor'),
-                            help='Enrollment type for user for a specific course, defaults to "honor"')
+                            help='Enrolment type for user for a specific course, defaults to "honor"')
         parser.add_argument('-u', '--username',
                             metavar='USERNAME',
                             help='Username, defaults to "user" in the email')

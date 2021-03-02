@@ -35,7 +35,7 @@ class Command(BaseCommand):
             '-c', '--course',
             nargs=1,
             required=True,
-            help='course ID to enroll the user in')
+            help='course ID to enrol the user in')
 
     def handle(self, *args, **options):
         """

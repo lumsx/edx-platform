@@ -86,7 +86,7 @@ CMS.URL.UPLOAD_ASSET = '${upload_asset_url | n, js_escaped_string}'
 
           % if about_page_editable:
           <div class="note note-promotion note-promotion-courseURL has-actions">
-            <h3 class="title">${_("Course Summary Page")} <span class="tip">${_("(for student enrollment and access)")}</span></h3>
+            <h3 class="title">${_("Course Summary Page")} <span class="tip">${_("(for student enrolment and access)")}</span></h3>
             <div class="copy">
               <%
                 link_for_about_page = lms_link_for_about_page
@@ -97,10 +97,10 @@ CMS.URL.UPLOAD_ASSET = '${upload_asset_url | n, js_escaped_string}'
             <ul class="list-actions">
               <li class="action-item">
                 <%
-                  email_subject = urllib.quote(_("Enroll in {course_display_name}").format(
+                  email_subject = urllib.quote(_("Enrol in {course_display_name}").format(
                       course_display_name = context_course.display_name_with_default
                   ).encode("utf-8"))
-                  email_body = urllib.quote(_('The course "{course_display_name}", provided by {platform_name}, is open for enrollment. Please navigate to this course at {link_for_about_page} to enroll.').format(
+                  email_body = urllib.quote(_('The course "{course_display_name}", provided by {platform_name}, is open for enrolment. Please navigate to this course at {link_for_about_page} to enroll.').format(
                       course_display_name = context_course.display_name_with_default,
                       platform_name = settings.PLATFORM_NAME,
                       link_for_about_page = link_for_about_page
@@ -203,9 +203,9 @@ CMS.URL.UPLOAD_ASSET = '${upload_asset_url | n, js_escaped_string}'
             </ol>
           </fieldset>
         </div>
-        
+
         <hr class="divide" />
-        
+
         <div id="schedule" class="group-settings schedule">
           <header>
             <h2 class="title-2">${_('Course Schedule')}</h2>
@@ -257,13 +257,13 @@ CMS.URL.UPLOAD_ASSET = '${upload_asset_url | n, js_escaped_string}'
           <ol class="list-input">
             <li class="field-group field-group-enrollment-start" id="enrollment-start">
               <div class="field date" id="field-enrollment-start-date">
-                <label for="course-enrollment-start-date">${_("Enrollment Start Date")}</label>
+                <label for="course-enrollment-start-date">${_("Enrolment Start Date")}</label>
                 <input type="text" class="start-date date start" id="course-enrollment-start-date" placeholder="MM/DD/YYYY" autocomplete="off" />
                 <span class="tip tip-stacked">${_("First day students can enroll")}</span>
               </div>
 
               <div class="field time" id="field-enrollment-start-time">
-                <label for="course-enrollment-start-time">${_("Enrollment Start Time")}</label>
+                <label for="course-enrollment-start-time">${_("Enrolment Start Time")}</label>
                 <input type="text" class="time start" id="course-enrollment-start-time" value="" placeholder="HH:MM" autocomplete="off" />
                 <span class="tip tip-stacked timezone">${_("(UTC)")}</span>
               </div>
@@ -274,7 +274,7 @@ CMS.URL.UPLOAD_ASSET = '${upload_asset_url | n, js_escaped_string}'
             %>
             <li class="field-group field-group-enrollment-end" id="enrollment-end">
               <div class="field date ${enrollment_end_editable_class}" id="field-enrollment-end-date">
-                <label for="course-enrollment-end-date">${_("Enrollment End Date")}</label>
+                <label for="course-enrollment-end-date">${_("Enrolment End Date")}</label>
                 <input type="text" class="end-date date end" id="course-enrollment-end-date" placeholder="MM/DD/YYYY" autocomplete="off" ${enrollment_end_readonly} />
                 <span class="tip tip-stacked">
                   ${_("Last day students can enroll.")}
@@ -285,7 +285,7 @@ CMS.URL.UPLOAD_ASSET = '${upload_asset_url | n, js_escaped_string}'
               </div>
 
               <div class="field time ${enrollment_end_editable_class}" id="field-enrollment-end-time">
-                <label for="course-enrollment-end-time">${_("Enrollment End Time")}</label>
+                <label for="course-enrollment-end-time">${_("Enrolment End Time")}</label>
                 <input type="text" class="time end" id="course-enrollment-end-time" value="" placeholder="HH:MM" autocomplete="off" ${enrollment_end_readonly} />
                 <span class="tip tip-stacked timezone">${_("(UTC)")}</span>
               </div>

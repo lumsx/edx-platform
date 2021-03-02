@@ -6,7 +6,7 @@ from django.utils.translation import pgettext
 from openedx.core.djangolib.markup import HTML, Text
 %>
 <fieldset class="batch-enrollment membership-section">
-    <legend id="heading-batch-enrollment" class="hd hd-3">${_("Batch Enrollment")}</legend>
+    <legend id="heading-batch-enrollment" class="hd hd-3">${_("Batch Enrolment")}</legend>
     <label>
         ${_("Enter email addresses and/or usernames separated by new lines or commas.")}
         ${_("You will not get notification for emails that bounce, so please double-check spelling.")}
@@ -26,14 +26,14 @@ from openedx.core.djangolib.markup import HTML, Text
 
     <label>
         ${_("Enter the reason why the students are to be manually enrolled or unenrolled.")}
-        ${_("This cannot be left blank and will be recorded and presented in Enrollment Reports.")}
+        ${_("This cannot be left blank and will be recorded and presented in Enrolment Reports.")}
         ${_("Therefore, please give enough detail to account for this action.")}
         <textarea rows="2" id="reason-field-id" name="reason-field" placeholder="${_('Reason')}" spellcheck="false"></textarea>
     </label>
     <div class="enroll-option">
         <label class="has-hint">
-            <input type="checkbox" name="auto-enroll" id="auto-enroll" value="Auto-Enroll" checked="yes" aria-describedby="heading-batch-enrollment">
-            <span class="label-text">${_("Auto Enroll")}</span>
+            <input type="checkbox" name="auto-enroll" id="auto-enroll" value="Auto-Enrol" checked="yes" aria-describedby="heading-batch-enrollment">
+            <span class="label-text">${_("Auto Enrol")}</span>
             <div class="hint auto-enroll-hint">
                 <span class="hint-caret"></span>
                 <p id="auto-enroll-tip">
@@ -59,7 +59,7 @@ from openedx.core.djangolib.markup import HTML, Text
         </label>
     </div>
     <div>
-        <input type="button" name="enrollment-button" class="enrollment-button" value="${pgettext('someone','Enroll')}" data-endpoint="${ section_data['enroll_button_url'] }" data-action="enroll" >
+        <input type="button" name="enrollment-button" class="enrollment-button" value="${pgettext('someone','Enrol')}" data-endpoint="${ section_data['enroll_button_url'] }" data-action="enroll" >
         <input type="button" name="enrollment-button" class="enrollment-button" value="${_("Unenroll")}" data-endpoint="${ section_data['unenroll_button_url'] }" data-action="unenroll" >
     </div>
     <div class="request-response"></div>
@@ -69,7 +69,7 @@ from openedx.core.djangolib.markup import HTML, Text
 <!-- Uploading a CSV file of bulk enrollment. -->
 <hr class="divider"/>
 <div class="bulk_enroll bulk_enroll_csv membership-section">
-    <h3 class="hd hd-3">${_("Batch Enrollment By CSV")}</h3>
+    <h3 class="hd hd-3">${_("Batch Enrolment By CSV")}</h3>
 
     <div class="csv-upload hidden" id="bulk-enrollment-file-upload" tabindex="-1"  data-url="${ section_data['upload_bulk_enrollments_csv_url'] }"></div>
 
@@ -77,7 +77,7 @@ from openedx.core.djangolib.markup import HTML, Text
         <p class="">
             <span class="icon fa fa-info-circle" aria-hidden="true"></span>
             ${Text(
-                _("Here is a sample bulk enrollments CSV file: {link_start}Edly Learners Bulk Enrollment (CSV).csv{link_end}.")
+                _("Here is a sample bulk enrolments CSV file: {link_start}Edly Learners Bulk Enrolment (CSV).csv{link_end}.")
             ).format(
                 link_start=HTML('<a href="https://edly-cloud-static-assets.s3.amazonaws.com/Edly+Learners+Bulk+Enrollment+(CSV).csv" class="btn-link link-cross-reference" target="_blank">'),
                 link_end=HTML('</a>')
@@ -88,7 +88,7 @@ from openedx.core.djangolib.markup import HTML, Text
         <p class="">
             <span class="icon fa fa-info-circle" aria-hidden="true"></span>
             ${Text(
-                _("To review students enrollments or see the results of uploading a CSV file, download bulk enrollment results file on the {link_start}Data Download{link_end} page.")
+                _("To review students enrolments or see the results of uploading a CSV file, download bulk enrolment results file on the {link_start}Data Download{link_end} page.")
             ).format(
                 link_start=HTML('<button type="button" id="data_download_tab_button" class="btn-link link-cross-reference" data-section="data_download">'),
                 link_end=HTML('</button>')
@@ -103,11 +103,11 @@ from openedx.core.djangolib.markup import HTML, Text
 <hr class="divider" />
 
   <div class="auto_enroll auto_enroll_csv membership-section">
-    <h3 class="hd hd-3">${_("Register/Enroll Students")}</h3>
+    <h3 class="hd hd-3">${_("Register/Enrol Students")}</h3>
     <p>${_("To register and enroll a list of users in this course, choose a CSV file that contains the following columns in this exact order: email, username, name, and country. Please include one student per row and do not include any headers, footers, or blank lines.")}</p>
     <form id="student-auto-enroll-form" method="post" action="${ section_data['upload_student_csv_button_url'] }" enctype="multipart/form-data">
       <div class="customBrowseBtn">
-        <label for="browseBtn-auto-enroll">${_("Upload a CSV for bulk enrollment")}</label>
+        <label for="browseBtn-auto-enroll">${_("Upload a CSV for bulk enrolment")}</label>
         <span id="browseFile" class="enhanced-input-file"></span>
         <div class="file-browse btn btn-primary" aria-hidden="true">
             <span class="browse">${('Browse')}</span>
@@ -133,8 +133,8 @@ from openedx.core.djangolib.markup import HTML, Text
     </label>
     <div class="enroll-option">
         <label class="has-hint">
-            <input type="checkbox" name="auto-enroll-beta" id="auto-enroll-beta" value="Auto-Enroll" checked="yes" aria-describedby="heading-batch-beta-testers">
-            <span class="label-text">${_("Auto Enroll")}</span>
+            <input type="checkbox" name="auto-enroll-beta" id="auto-enroll-beta" value="Auto-Enrol" checked="yes" aria-describedby="heading-batch-beta-testers">
+            <span class="label-text">${_("Auto Enrol")}</span>
             <div class="hint auto-enroll-beta-hint">
                 <span class="hint-caret"></span>
                 <p id="auto-enroll-beta-tip">
