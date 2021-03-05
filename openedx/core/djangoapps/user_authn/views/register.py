@@ -165,11 +165,7 @@ def create_account_with_params(request, params):
             is_third_party_auth_enabled, third_party_auth_credentials_in_api, user, request, params,
         )
 
-        new_user = authenticate_new_user(request, user.username, params['password'])
-        django_login(request, new_user)
-        request.session.set_expiry(0)
-
-        post_account_creation_external_auth(do_external_auth, eamap, new_user)
+        post_account_creation_external_auth(do_external_auth, eamap, user)
 
     # Check if system is configured to skip activation email for the current user.
     skip_email = _skip_activation_email(
@@ -200,17 +196,12 @@ def create_account_with_params(request, params):
     create_comments_service_user(user)
 
     try:
-        _record_registration_attributions(request, new_user)
+        _record_registration_attributions(request, user)
     # Don't prevent a user from registering due to attribution errors.
     except Exception:   # pylint: disable=broad-except
         log.exception('Error while attributing cookies to user registration.')
 
-    # TODO: there is no error checking here to see that the user actually logged in successfully,
-    # and is not yet an active user.
-    if new_user is not None:
-        AUDIT_LOG.info(u"Login success on new account creation - {0}".format(new_user.username))
-
-    return new_user
+    return user
 
 
 def pre_account_creation_external_auth(request, params):

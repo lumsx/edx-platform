@@ -172,7 +172,6 @@ class RegistrationView(APIView):
             return HttpResponseForbidden(_("Account creation not allowed."))
 
         response = JsonResponse({"success": True})
-        set_logged_in_cookies(request, response, user)
         return response
 
     @method_decorator(transaction.non_atomic_requests)
