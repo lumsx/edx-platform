@@ -300,7 +300,7 @@ such that the value can be defined later than this assignment (file load order).
                 this.fileUploaderView = new FileUploaderView({
                     el: uploadElement,
                     title: gettext(
-                      'Bulk enroll students to this course by uploading a CSV file that contains the email column. ' +
+                      'Bulk enrol students to this course by uploading a CSV file that contains the email column. ' +
                       'Enrolment emails will be sent to registered students and registration invitation emails will be ' +
                       'sent to new users.'
                     ),

@@ -100,7 +100,7 @@ CMS.URL.UPLOAD_ASSET = '${upload_asset_url | n, js_escaped_string}'
                   email_subject = urllib.quote(_("Enrol in {course_display_name}").format(
                       course_display_name = context_course.display_name_with_default
                   ).encode("utf-8"))
-                  email_body = urllib.quote(_('The course "{course_display_name}", provided by {platform_name}, is open for enrolment. Please navigate to this course at {link_for_about_page} to enroll.').format(
+                  email_body = urllib.quote(_('The course "{course_display_name}", provided by {platform_name}, is open for enrolment. Please navigate to this course at {link_for_about_page} to enrol.').format(
                       course_display_name = context_course.display_name_with_default,
                       platform_name = settings.PLATFORM_NAME,
                       link_for_about_page = link_for_about_page
@@ -259,7 +259,7 @@ CMS.URL.UPLOAD_ASSET = '${upload_asset_url | n, js_escaped_string}'
               <div class="field date" id="field-enrollment-start-date">
                 <label for="course-enrollment-start-date">${_("Enrolment Start Date")}</label>
                 <input type="text" class="start-date date start" id="course-enrollment-start-date" placeholder="MM/DD/YYYY" autocomplete="off" />
-                <span class="tip tip-stacked">${_("First day students can enroll")}</span>
+                <span class="tip tip-stacked">${_("First day students can enrol")}</span>
               </div>
 
               <div class="field time" id="field-enrollment-start-time">
@@ -277,7 +277,7 @@ CMS.URL.UPLOAD_ASSET = '${upload_asset_url | n, js_escaped_string}'
                 <label for="course-enrollment-end-date">${_("Enrolment End Date")}</label>
                 <input type="text" class="end-date date end" id="course-enrollment-end-date" placeholder="MM/DD/YYYY" autocomplete="off" ${enrollment_end_readonly} />
                 <span class="tip tip-stacked">
-                  ${_("Last day students can enroll.")}
+                  ${_("Last day students can enrol")}
                 % if not enrollment_end_editable:
                   ${_("Contact your edX partner manager to update these settings.")}
                 % endif
@@ -616,7 +616,7 @@ CMS.URL.UPLOAD_ASSET = '${upload_asset_url | n, js_escaped_string}'
     <div class="content-supplementary" role="complementary">
      <div class="bit">
         <h3 class="title-3">${_("How are these settings used?")}</h3>
-        <p>${_("Your course's schedule determines when students can enroll in and begin a course.")}</p>
+        <p>${_("Your course's schedule determines when students can enrol in and begin a course.")}</p>
 
         <p>${_("Other information from this page appears on the About page for your course. This information includes the course overview, course image, introduction video, and estimated time requirements. Students use About pages to choose new courses to take.")}</p>
      </div>

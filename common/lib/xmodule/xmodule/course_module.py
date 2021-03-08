@@ -279,8 +279,8 @@ class CourseFields(object):
     )
 
     wiki_slug = String(help=_("Slug that points to the wiki for this course"), scope=Scope.content)
-    enrollment_start = Date(help=_("Date that enrollment for this class is opened"), scope=Scope.settings)
-    enrollment_end = Date(help=_("Date that enrollment for this class is closed"), scope=Scope.settings)
+    enrollment_start = Date(help=_("Date that enrolment for this class is opened"), scope=Scope.settings)
+    enrollment_end = Date(help=_("Date that enrolment for this class is closed"), scope=Scope.settings)
     start = Date(
         help=_("Start time when this module is visible"),
         default=DEFAULT_START_DATE,
@@ -684,7 +684,7 @@ class CourseFields(object):
     max_student_enrollments_allowed = Integer(
         display_name=_("Course Maximum Student Enrolment"),
         help=_(
-            "Enter the maximum number of students that can enroll in the course. To allow an unlimited number of "
+            "Enter the maximum number of students that can enrol in the course. To allow an unlimited number of "
             "students, enter null."
         ),
         scope=Scope.settings
@@ -702,7 +702,7 @@ class CourseFields(object):
 
     invitation_only = Boolean(
         display_name=_("Invitation Only"),
-        help=_("Whether to restrict enrollment to invitation by the course staff."),
+        help=_("Whether to restrict enrolment to invitation by the course staff."),
         default=False,
         scope=Scope.settings
     )

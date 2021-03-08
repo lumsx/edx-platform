@@ -64,7 +64,7 @@
                         {
                             key: ENROLLMENT_TRACK,
                             displayName: gettext('Enrolment Tracks'),
-                            descriptiveText: gettext('Use enrolment tracks as the basis for dividing discussions. All learners, regardless of their enrollment track, see the same discussion topics, but within divided topics, only learners who are in the same enrolment track see and respond to each others’ posts.'), //  eslint-disable-line max-len
+                            descriptiveText: gettext('Use enrolment tracks as the basis for dividing discussions. All learners, regardless of their enrolment track, see the same discussion topics, but within divided topics, only learners who are in the same enrolment track see and respond to each others’ posts.'), //  eslint-disable-line max-len
                             selected: selectedScheme === ENROLLMENT_TRACK,
                             enabled: this.isSchemeAvailable(ENROLLMENT_TRACK) || selectedScheme === ENROLLMENT_TRACK
                         },
