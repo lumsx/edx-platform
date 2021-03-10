@@ -6,7 +6,7 @@ import CourseCardModel from '../models/course_card_model';
 import CourseEnrollModel from '../models/course_enroll_model';
 import CourseEnrollView from '../views/course_enroll_view';
 
-describe('Course Enroll View', () => {
+describe('Course Enrol View', () => {
   let view = null;
   let courseCardModel;
   let courseEnrollModel;
@@ -136,7 +136,7 @@ describe('Course Enroll View', () => {
 
   it('should render the course enroll view when not enrolled', () => {
     setupView(singleCourseRunList);
-    expect(view.$('.enroll-button').text().trim()).toEqual('Enroll Now');
+    expect(view.$('.enroll-button').text().trim()).toEqual('Enrol Now');
     expect(view.$('.run-select').length).toBe(0);
   });
 

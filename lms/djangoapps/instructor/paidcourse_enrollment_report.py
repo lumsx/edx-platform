@@ -78,11 +78,11 @@ class PaidCourseEnrollmentReportProvider(BaseAbstractEnrollmentReportProvider):
         currently_enrolled = course_enrollment.is_active
 
         course_enrollment_data = collections.OrderedDict()
-        course_enrollment_data['Enrollment Date'] = enrollment_date
+        course_enrollment_data['Enrolment Date'] = enrollment_date
         course_enrollment_data['Currently Enrolled'] = currently_enrolled
-        course_enrollment_data['Enrollment Source'] = enrollment_source
-        course_enrollment_data['Manual (Un)Enrollment Reason'] = manual_enrollment_reason
-        course_enrollment_data['Enrollment Role'] = enrollment_role
+        course_enrollment_data['Enrolment Source'] = enrollment_source
+        course_enrollment_data['Manual (Un)Enrolment Reason'] = manual_enrollment_reason
+        course_enrollment_data['Enrolment Role'] = enrollment_role
         return course_enrollment_data
 
     def get_payment_info(self, user, course_id):

@@ -2,7 +2,7 @@
 <%! from django.utils.translation import ugettext as _ %>
 <%! from django.urls import reverse %>
 <section id="invalidate_registration_code_modal" class="modal" role="dialog" tabindex="-1" aria-labelledby="header-enrollment-code-status">
-    <h2 id="header-enrollment-code-status" class="hd hd-2">${_("Enrollment Code Status")}</h2>
+    <h2 id="header-enrollment-code-status" class="hd hd-2">${_("Enrolment Code Status")}</h2>
   <div class="inner-wrapper">
     <button class="close-modal">
       <span class="icon fa fa-remove" aria-hidden="true"></span>
@@ -14,12 +14,12 @@
 
     <div id="regcode-content">
       <header>
-        <h3 class="hd hd-3">${_("Enrollment Code Status")}</h3>
+        <h3 class="hd hd-3">${_("Enrolment Code Status")}</h3>
       </header>
 
       <div class="instructions">
         <p>
-          ${_("Change the status of an enrollment code.")}</p>
+          ${_("Change the status of an enrolment code.")}</p>
       </div>
       <form id="set_regcode_status_form">
         <div id="regcode_status_form_error" class="modal-form-error"></div>
@@ -29,13 +29,13 @@
 
           <ol class="list-input">
             <li class="field required text" id="set-course-mode-modal-field-price">
-              <label for="regcode_code">${_("Enrollment Code")}</label>
+              <label for="regcode_code">${_("Enrolment Code")}</label>
               <input class="field" id="regcode_code" type="text" name="regcode_code" placeholder="Enter an Enrollment Code" aria-required="true">
             </li>
           </ol>
         </fieldset>
         <div class="submit">
-          <input name="submit" type="button" id="lookup_regcode" data-endpoint="${section_data['look_up_registration_code']}" value="${_('Find Enrollment Code')}"/>
+          <input name="submit" type="button" id="lookup_regcode" data-endpoint="${section_data['look_up_registration_code']}" value="${_('Find Enrolment Code')}"/>
         </div>
       </form>
     </div>

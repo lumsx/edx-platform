@@ -56,7 +56,7 @@
                     window.analytics = jasmine.createSpyObj('analytics', ['track', 'page', 'pageview', 'trackLink']);
                 });
 
-                it('saves the email opt-in preference before enrollment', function() {
+                it('saves the email opt-in preference before enrolment', function() {
                 // Simulate providing enrollment query string params
                     setFakeQueryParams({
                         '?enrollment_action': 'enroll',

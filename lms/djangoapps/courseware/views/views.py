@@ -129,7 +129,7 @@ CertData = namedtuple(
 
 AUDIT_PASSING_CERT_DATA = CertData(
     CertificateStatuses.audit_passing,
-    _('Your enrollment: Audit track'),
+    _('Your enrolment: Audit track'),
     _('You are enrolled in the audit track for this course. The audit track does not include a certificate.'),
     download_url=None,
     cert_web_view_url=None
@@ -137,8 +137,8 @@ AUDIT_PASSING_CERT_DATA = CertData(
 
 HONOR_PASSING_CERT_DATA = CertData(
     CertificateStatuses.honor_passing,
-    _('Your enrollment: Honor track'),
-    _('You are enrolled in the honor track for this course. The honor track does not include a certificate.'),
+    _('Your enrolment: Honor track'),
+    _('You are enrolled in the honour track for this course. The honour track does not include a certificate.'),
     download_url=None,
     cert_web_view_url=None
 )
@@ -558,7 +558,7 @@ class CourseTabView(EdxFragmentView):
                 # Only show enroll button if course is open for enrollment.
                 if course_open_for_self_enrollment(course.id):
                     enroll_message = _(u'You must be enrolled in the course to see course content. \
-                            {enroll_link_start}Enroll now{enroll_link_end}.')
+                            {enroll_link_start}Enrol now{enroll_link_end}.')
                     PageLevelMessages.register_warning_message(
                         request,
                         Text(enroll_message).format(
