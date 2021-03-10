@@ -161,7 +161,7 @@ def _generate_not_activated_message(user):
         settings.PLATFORM_NAME
     )
 
-    not_activated_msg_template = _('Your account has not been confirmed.<br /><br />'
+    not_activated_msg_template = _('Your account has not been confirmed.<br />'
                                    'Activate your account by clicking the link in your activation email sent to <strong>{email}</strong>. If '
                                    'you do not receive an email, check your spam folders or '
                                    '<a href="{support_url}">contact {platform} Support</a>.')
