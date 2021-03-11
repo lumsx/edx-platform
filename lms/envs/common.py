@@ -186,14 +186,14 @@ FEATURES = {
     # .. toggle_name: DISABLE_HONOR_CERTIFICATES
     # .. toggle_type: feature_flag
     # .. toggle_default: False
-    # .. toggle_description: Set to True to disable honor certificates. Typically used when your installation only allows verified certificates, like courses.edx.org.
+    # .. toggle_description: Set to True to disable honour certificates. Typically used when your installation only allows verified certificates, like courses.edx.org.
     # .. toggle_category: certificates
     # .. toggle_use_cases: open_edx
     # .. toggle_creation_date: 2019-05-14
     # .. toggle_expiration_date: None
     # .. toggle_tickets: https://openedx.atlassian.net/browse/PROD-269
     # .. toggle_status: supported
-    'DISABLE_HONOR_CERTIFICATES': False,  # Toggle to disable honor certificates
+    'DISABLE_HONOR_CERTIFICATES': False,  # Toggle to disable honour certificates
 
     # for acceptance and load testing
     'AUTOMATIC_AUTH_FOR_TESTING': False,

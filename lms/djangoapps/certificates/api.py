@@ -353,7 +353,7 @@ def generate_example_certificates(course_key):
     the self-generated certificates button for students.
 
     Several example certificates may be generated for a course.
-    For example, if a course offers both verified and honor certificates,
+    For example, if a course offers both verified and honour certificates,
     examples of both types of certificate will be generated.
 
     If an error occurs while starting the certificate generation

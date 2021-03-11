@@ -178,7 +178,7 @@ class BasketsViewTests(EnrollmentEventTestMixin, UserMixin, ModuleStoreTestCase)
         If the course does not have an SKU and has an honor mode, the user
         should be enrolled as honor. This ensures backwards
         compatibility with courses existing before the removal of
-        honor certificates.
+        honour certificates.
         """
         # Remove all existing course modes
         CourseMode.objects.filter(course_id=self.course.id).delete()

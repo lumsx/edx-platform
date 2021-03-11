@@ -22,7 +22,7 @@ class CourseTests(TestCase):
         ('professional', 'Professional Education'),
         ('no-id-professional', 'Professional Education'),
         ('verified', 'Verified Certificate'),
-        ('honor', 'Honor Certificate'),
+        ('honor', 'Honour Certificate'),
         ('audit', 'Audit'),
     )
     def test_get_mode_display_name(self, slug, expected_display_name):

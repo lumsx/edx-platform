@@ -49,7 +49,7 @@ class Course(object):
         elif slug == 'verified':
             return 'Verified Certificate'
         elif slug == 'honor':
-            return 'Honor Certificate'
+            return 'Honour Certificate'
         elif slug == 'audit':
             return 'Audit'
 
