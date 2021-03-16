@@ -141,6 +141,7 @@
   // main content bits
   .page-content {
     padding: $baseline;
+    display: block;
   }
 
   .page-content-nav {
@@ -153,6 +154,14 @@
 
   .listing-tools {
     margin: ($baseline/10) $baseline;
+    @media (min-width: $bp-screen-md) {
+      white-space: nowrap;
+    }
+
+
+    label {
+      display: inline-block;
+    }
   }
 
   // reset general ul styles
@@ -175,6 +184,7 @@
     border-radius: 3px;
     background-color: $white;
     color: $black;
+    padding: 1.25rem;
 
     // STATE: hover, active, and focus
     &:hover,
@@ -724,6 +734,13 @@
 
     .create-team.wrapper-msg {
       margin: 0 0 $baseline 0;
+    }
+  }
+
+  .search-form {
+
+    .wrapper-search-input {
+      width: auto;
     }
   }
 }
