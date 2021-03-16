@@ -16,39 +16,39 @@ import pytz
    <div id = "accordion">
       %if not section_data['is_ecommerce_course']:
        <div class="wrap">
-         <h3 class="hd hd-3">${_('Enrollment Codes')}</h3>
+         <h3 class="hd hd-3">${_('Enrolment Codes')}</h3>
          <div>
             %if section_data['sales_admin']:
             <span class="code_tip">
-                <p>${_('Create one or more pre-paid course enrollment codes. Students can use these codes to enroll in the course.')}</p>
-                <a id="registration_code_generation_link" href="#reg_code_generation_modal" class="add blue-button">${_('Create Enrollment Codes')}</a>
+                <p>${_('Create one or more pre-paid course enrolment codes. Students can use these codes to enroll in the course.')}</p>
+                <a id="registration_code_generation_link" href="#reg_code_generation_modal" class="add blue-button">${_('Create Enrolment Codes')}</a>
                 <p></p>
-                <p>${_('Cancel, restore, or mark an enrollment code as unused.')}</p>
-                <a id="query_registration_code_link" href="#invalidate_registration_code_modal" rel="leanModal" class="add blue-button">${_('Change Enrollment Code Status')}</a>
+                <p>${_('Cancel, restore, or mark an enrolment code as unused.')}</p>
+                <a id="query_registration_code_link" href="#invalidate_registration_code_modal" rel="leanModal" class="add blue-button">${_('Change Enrolment Code Status')}</a>
             </span>
             %endif
-            <p>${_('Download a .csv file of all enrollment codes for this course.')}</p>
+            <p>${_('Download a .csv file of all enrolment codes for this course.')}</p>
             <p>
             <form action="${ section_data['get_registration_code_csv_url'] }" id="download_registration_codes" method="post">
                <input type="hidden" name="csrfmiddlewaretoken" value="${ csrf_token }">
                <input type="text" name="download_company_name" placeholder="Company Name (optional)"/>
-               <input type="submit" name="list-registration-codes-csv" value="${_("Download All Enrollment Codes")}" data-csv="true">
+               <input type="submit" name="list-registration-codes-csv" value="${_("Download All Enrolment Codes")}" data-csv="true">
             </form>
             </p>
-            <p>${_('Download a .csv file of all unused enrollment codes for this course.')}</p>
+            <p>${_('Download a .csv file of all unused enrolment codes for this course.')}</p>
             <p>
             <form action="${ section_data['active_registration_code_csv_url'] }" id="active_registration_codes" method="post">
                <input type="hidden" name="csrfmiddlewaretoken" value="${ csrf_token }">
                <input type="text" name="active_company_name" placeholder="Company Name (optional)"/>
-               <input type="submit" name="active-registration-codes-csv" value="${_("Download Unused Enrollment Codes")}" data-csv="true">
+               <input type="submit" name="active-registration-codes-csv" value="${_("Download Unused Enrolment Codes")}" data-csv="true">
             </form>
             </p>
-            <p>${_('Download a .csv file of all used enrollment codes for this course.')}</p>
+            <p>${_('Download a .csv file of all used enrolment codes for this course.')}</p>
             <p>
             <form action="${ section_data['spent_registration_code_csv_url'] }" id="spent_registration_codes" method="post">
                <input type="hidden" name="csrfmiddlewaretoken" value="${ csrf_token }">
                <input type="text" name="spent_company_name" placeholder="Company Name (optional)"/>
-               <input type="submit" name="spent-registration-codes-csv" value="${_("Download Used Enrollment Codes")}" data-csv="true">
+               <input type="submit" name="spent-registration-codes-csv" value="${_("Download Used Enrolment Codes")}" data-csv="true">
             </form>
             </p>
            <a id="registration_code_generation_link-trigger" href="#registration_code_generation_modal" rel="leanModal"></a>
@@ -100,8 +100,8 @@ import pytz
         <div>
           <span class="csv_tip">
             <div>
-              <p>${_("Create a .csv file that contains enrollment information for your course.")}</p>
-              <input type="button" class="add blue-button" name="user-enrollment-report" value="${_("Create Enrollment Report")}" data-endpoint="${ section_data['enrollment_report_url'] }">
+              <p>${_("Create a .csv file that contains enrolment information for your course.")}</p>
+              <input type="button" class="add blue-button" name="user-enrollment-report" value="${_("Create Enrolment Report")}" data-endpoint="${ section_data['enrollment_report_url'] }">
             </div>
             <div class="request-response msg msg-confirm copy" id="enrollment-report-request-response"></div>
             <div class="request-response-error msg msg-warning copy" id="enrollment-report-request-response-error"></div>
@@ -450,13 +450,13 @@ import pytz
       }
       if (total_registration_codes == '') {
         registration_code_error.attr('style', 'display: block !important');
-        registration_code_error.text("${_('Enter the number of enrollment codes.') | n, js_escaped_string}");
+        registration_code_error.text("${_('Enter the number of enrolment codes.') | n, js_escaped_string}");
         generate_registration_button.removeAttr('disabled');
         return false
       }
       if (!($.isNumeric(total_registration_codes))) {
         registration_code_error.attr('style', 'display: block !important');
-        registration_code_error.text("${_('Enter a numeric value for the number of enrollment codes.') | n, js_escaped_string}");
+        registration_code_error.text("${_('Enter a numeric value for the number of enrolment codes.') | n, js_escaped_string}");
         generate_registration_button.removeAttr('disabled');
         return false;
       }

@@ -153,7 +153,7 @@ class PayAndVerifyView(View):
         FACE_PHOTO_STEP: ugettext_lazy("Take photo"),
         ID_PHOTO_STEP: ugettext_lazy("Take a photo of your ID"),
         REVIEW_PHOTOS_STEP: ugettext_lazy("Review your info"),
-        ENROLLMENT_CONFIRMATION_STEP: ugettext_lazy("Enrollment confirmation"),
+        ENROLLMENT_CONFIRMATION_STEP: ugettext_lazy("Enrolment confirmation"),
     }
 
     # Messages

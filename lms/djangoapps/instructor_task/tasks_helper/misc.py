@@ -263,7 +263,7 @@ def bulk_enroll_students_and_upload(_xmodule_instance_args, _entry_id, course_id
         'Learners Enrolled': 0,
         'Learners Not Found': set(),
         'Learners Already Enrolled': set(),
-        'Learners Failed To Enroll': set(),
+        'Learners Failed To Enrol': set(),
     }
 
     with DefaultStorage().open(task_input['file_name']) as f:
@@ -295,7 +295,7 @@ def bulk_enroll_students_and_upload(_xmodule_instance_args, _entry_id, course_id
                     username_or_email,
                     course_id
                 )
-                enrollments_status['Learners Failed To Enroll'].add(username_or_email)
+                enrollments_status['Learners Failed To Enrol'].add(username_or_email)
                 task_progress.failed += 1
 
             task_progress.update_task_state(extra_meta=current_step)
@@ -305,7 +305,7 @@ def bulk_enroll_students_and_upload(_xmodule_instance_args, _entry_id, course_id
 
     # Filter the output of `bulk_enroll_users_to_course` in order to upload the result.
     output_header = [
-        'Learners Enrolled', 'Learners Not Found', 'Learners Already Enrolled', 'Learners Failed To Enroll',
+        'Learners Enrolled', 'Learners Not Found', 'Learners Already Enrolled', 'Learners Failed To Enrol',
     ]
 
     output_rows = [
@@ -313,7 +313,7 @@ def bulk_enroll_students_and_upload(_xmodule_instance_args, _entry_id, course_id
             ','.join(enrollments_status.get(column_name, '')) if (
                 column_name == 'Learners Not Found'
                 or column_name == 'Learners Already Enrolled'
-                or column_name == 'Learners Failed To Enroll'
+                or column_name == 'Learners Failed To Enrol'
             )
             else enrollments_status[column_name]
             for column_name in output_header

@@ -347,7 +347,7 @@ class EntitlementEnrollmentViewSet(viewsets.GenericViewSet):
             # not do anything else related to Entitlements.
         except CourseEnrollmentException:
             message = (
-                'Course Entitlement Enroll for {username} failed for course: {course_id}, '
+                'Course Entitlement Enrol for {username} failed for course: {course_id}, '
                 'mode: {mode}, and entitlement: {entitlement}'
             ).format(
                 username=user.username,

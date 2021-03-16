@@ -1758,7 +1758,7 @@ class CourseRegCodeItem(OrderItem):
         item.unit_cost = cost
         item.list_price = cost
         item.qty = qty
-        item.line_desc = _(u'Enrollment codes for Course: {course_name}').format(
+        item.line_desc = _(u'Enrolment codes for Course: {course_name}').format(
             course_name=course.display_name_with_default)
         item.currency = currency
         order.currency = currency

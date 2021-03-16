@@ -65,7 +65,7 @@ def get_certificate_description(mode, certificate_type, platform_name):
     if mode == 'honor':
         # Translators:  This text describes the 'Honor' course certificate type.
         certificate_type_description = _("An {cert_type} certificate signifies that a "
-                                         "learner has agreed to abide by the honor code established by {platform_name} "
+                                         "learner has agreed to abide by the honour code established by {platform_name} "
                                          "and has completed all of the required tasks for this course under its "
                                          "guidelines.").format(cert_type=certificate_type,
                                                                platform_name=platform_name)
@@ -73,7 +73,7 @@ def get_certificate_description(mode, certificate_type, platform_name):
         # Translators:  This text describes the 'ID Verified' course certificate type, which is a higher level of
         # verification offered by edX.  This type of verification is useful for professional education/certifications
         certificate_type_description = _("A {cert_type} certificate signifies that a "
-                                         "learner has agreed to abide by the honor code established by {platform_name} "
+                                         "learner has agreed to abide by the honour code established by {platform_name} "
                                          "and has completed all of the required tasks for this course under its "
                                          "guidelines. A {cert_type} certificate also indicates that the "
                                          "identity of the learner has been checked and "
@@ -172,7 +172,7 @@ def _update_context_with_basic_info(context, course_id, platform_name, configura
     # in the browser title bar when a requested certificate is not found or recognized
     context['document_title'] = _("Invalid Certificate")
 
-    context['company_tos_urltext'] = _("Terms of Service & Honor Code")
+    context['company_tos_urltext'] = _("Terms of Service & Honour Code")
 
     # Translators: A 'Privacy Policy' is a legal document/statement describing a website's use of personal information
     context['company_privacy_urltext'] = _("Privacy Policy")

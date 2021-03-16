@@ -52,13 +52,13 @@ define(['backbone', 'underscore', 'gettext', 'js/models/validation_helpers', 'js
                     errors.end_date = gettext('The course end date must be later than the course start date.');
                 }
                 if (newattrs.start_date && newattrs.enrollment_start && newattrs.start_date < newattrs.enrollment_start) {
-                    errors.enrollment_start = gettext('The course start date must be later than the enrollment start date.');
+                    errors.enrollment_start = gettext('The course start date must be later than the enrolment start date.');
                 }
                 if (newattrs.enrollment_start && newattrs.enrollment_end && newattrs.enrollment_start >= newattrs.enrollment_end) {
-                    errors.enrollment_end = gettext('The enrollment start date cannot be after the enrollment end date.');
+                    errors.enrollment_end = gettext('The enrolment start date cannot be after the enrolment end date.');
                 }
                 if (newattrs.end_date && newattrs.enrollment_end && newattrs.end_date < newattrs.enrollment_end) {
-                    errors.enrollment_end = gettext('The enrollment end date cannot be after the course end date.');
+                    errors.enrollment_end = gettext('The enrolment end date cannot be after the course end date.');
                 }
                 if (this.showCertificateAvailableDate && newattrs.end_date && newattrs.certificate_available_date &&
                     newattrs.certificate_available_date < newattrs.end_date) {

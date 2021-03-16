@@ -16,7 +16,7 @@ from django.urls import reverse
 
     <div id="registration-content">
       <header>
-        <h3 class="hd hd-3">${_("Create Enrollment Codes")}</h3>
+        <h3 class="hd hd-3">${_("Create Enrolment Codes")}</h3>
       </header>
 
       <div class="instructions">
@@ -36,7 +36,7 @@ from django.urls import reverse
               <input class="field required" id="id_company_name" type="text" name="company_name"
                      placeholder="${_('Organization Name')}" aria-required="true" />
               <span class="tip-text">
-                ${_("The organization that purchased enrollments in the course")}
+                ${_("The organization that purchased enrolments in the course")}
               </span>
             </li>
             <li class="field required text" id="generate-registration-modal-field-company-contact-name">
@@ -110,15 +110,15 @@ from django.urls import reverse
               <input class="field required" id="id_unit_price" type="text" name="unit_price"
                      aria-required="true" />
               <span class="tip-text">
-                ${_("The price per enrollment purchased")}
+                ${_("The price per enrolment purchased")}
               </span>
             </li>
             <li class="field required text" id="generate-registration-modal-field-total-codes">
-              <label for="id_total_registration_codes" class="required text">${_("Number of Enrollment Codes")}</label>
+              <label for="id_total_registration_codes" class="required text">${_("Number of Enrolment Codes")}</label>
               <input class="field required" id="id_total_registration_codes" type="text" name="total_registration_codes"
                      aria-required="true"/>
               <span class="tip-text">
-                ${_("The total number of enrollment codes to create")}
+                ${_("The total number of enrolment codes to create")}
               </span>
             </li>
             <div class="clearfix"></div>
@@ -147,7 +147,7 @@ from django.urls import reverse
           </ol>
         </fieldset>
         <div class="submit">
-          <input name="generate-registration-codes-csv" type="submit" value="${_('Create Enrollment Codes')}" data-csv="true"/>
+          <input name="generate-registration-codes-csv" type="submit" value="${_('Create Enrolment Codes')}" data-csv="true"/>
         </div>
       </form>
     </div>

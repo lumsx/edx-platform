@@ -63,8 +63,8 @@
                         },
                         {
                             key: ENROLLMENT_TRACK,
-                            displayName: gettext('Enrollment Tracks'),
-                            descriptiveText: gettext('Use enrollment tracks as the basis for dividing discussions. All learners, regardless of their enrollment track, see the same discussion topics, but within divided topics, only learners who are in the same enrollment track see and respond to each others’ posts.'), //  eslint-disable-line max-len
+                            displayName: gettext('Enrolment Tracks'),
+                            descriptiveText: gettext('Use enrolment tracks as the basis for dividing discussions. All learners, regardless of their enrolment track, see the same discussion topics, but within divided topics, only learners who are in the same enrolment track see and respond to each others’ posts.'), //  eslint-disable-line max-len
                             selected: selectedScheme === ENROLLMENT_TRACK,
                             enabled: this.isSchemeAvailable(ENROLLMENT_TRACK) || selectedScheme === ENROLLMENT_TRACK
                         },
@@ -181,7 +181,7 @@
                             details = gettext('Discussion topics in the course are not divided.');
                             break;
                         case ENROLLMENT_TRACK:
-                            details = gettext('Any divided discussion topics are divided based on enrollment track.'); //  eslint-disable-line max-len
+                            details = gettext('Any divided discussion topics are divided based on enrolment track.'); //  eslint-disable-line max-len
                             break;
                         case COHORT:
                             details = gettext('Any divided discussion topics are divided based on cohort.');

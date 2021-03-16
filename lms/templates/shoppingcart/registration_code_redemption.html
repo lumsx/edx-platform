@@ -5,14 +5,14 @@ from openedx.core.lib.courses import course_image_url
 %>
 <%inherit file="../main.html" />
 <%namespace name='static' file='/static_content.html'/>
-<%block name="pagetitle">${_("Confirm Enrollment")}</%block>
+<%block name="pagetitle">${_("Confirm Enrolment")}</%block>
 
 <%block name="content">
 <div class="container">
   <section class="wrapper confirm-enrollment">
     <header class="page-header">
       <h1 class="title">
-        ${_("{site_name} -  Confirm Enrollment").format(site_name=site_name)}
+        ${_("{site_name} -  Confirm Enrolment").format(site_name=site_name)}
       </h1>
     </header>
     <section>
@@ -25,7 +25,7 @@ from openedx.core.lib.courses import course_image_url
       </div>
       <div class="enrollment-details">
         <div class="sub-title">
-          ${_("Confirm your enrollment for: {span_start}course dates{span_end}").format(
+          ${_("Confirm your enrolment for: {span_start}course dates{span_end}").format(
               span_start='<span class="course-date-label">',
               span_end='</span>'
             )}
@@ -88,7 +88,7 @@ from openedx.core.lib.courses import course_image_url
             <input type="hidden" name="csrfmiddlewaretoken" value="${ csrf_token }" aria-hidden="true">
             <button type="submit"
                id="id_active_course_enrollment"
-               name="active_course_enrollment">${_("Activate Course Enrollment")} <span class="icon fa fa-caret-right" aria-hidden="true"></span></button>
+               name="active_course_enrollment">${_("Activate Course Enrolment")} <span class="icon fa fa-caret-right" aria-hidden="true"></span></button>
           </form>
         %endif
       %endif

@@ -23,8 +23,8 @@ SUPPORT_INDEX_URLS = [
     },
     {
         "url": reverse_lazy("support:enrollment"),
-        "name": _("Enrollment"),
-        "description": _("View and update learner enrollments."),
+        "name": _("Enrolment"),
+        "description": _("View and update learner enrolments."),
     },
     {
         "url": reverse_lazy("support:manage_user"),
@@ -38,8 +38,8 @@ SUPPORT_INDEX_URLS = [
     },
     {
         "url": reverse_lazy("support:feature_based_enrollments"),
-        "name": _("Feature Based Enrollments"),
-        "description": _("View feature based enrollment settings"),
+        "name": _("Feature Based Enrolments"),
+        "description": _("View feature based enrolment settings"),
     },
 ]
 

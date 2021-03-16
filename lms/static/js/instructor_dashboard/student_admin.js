@@ -153,11 +153,11 @@
                         gettext('Please enter a student email address or username.')
                     );
                 }
-                errorMessage = gettext("Error getting enrollment status for '<%- student_id %>'. Make sure that the student identifier is spelled correctly.");  // eslint-disable-line max-len
+                errorMessage = gettext("Error getting enrolment status for '<%- student_id %>'. Make sure that the student identifier is spelled correctly.");  // eslint-disable-line max-len
                 fullErrorMessage = _.template(errorMessage)({
                     student_id: uniqStudentIdentifier
                 });
-                studentadmin.$enrollment_status.text(gettext("Retrieving enrollment status..."));
+                studentadmin.$enrollment_status.text(gettext("Retrieving enrolment status..."));
                 return $.ajax({
                     type: 'POST',
                     dataType: 'json',

@@ -88,7 +88,7 @@ var edx = edx || {};
             var lookup_registration_code = $('#set_regcode_status_form input[name="regcode_code"]').val();
             if (lookup_registration_code == '') {
                 $registration_code_status_form_error.show();
-                $registration_code_status_form_error.text(gettext('Enter the enrollment code.'));
+                $registration_code_status_form_error.text(gettext('Enter the enrolment code.'));
                 $lookup_button.removeAttr('disabled');
                 return false;
             }
@@ -115,7 +115,7 @@ var edx = edx || {};
                             actions.push(
                                 {
                                     action_url: data.registration_code_detail_url,
-                                    action_name: gettext('Cancel enrollment code'),
+                                    action_name: gettext('Cancel enrolment code'),
                                     registration_code: lookup_registration_code,
                                     action_type: 'invalidate_registration_code'
                                 }
@@ -124,7 +124,7 @@ var edx = edx || {};
                             actions.push(
                                 {
                                     action_url: data.registration_code_detail_url,
-                                    action_name: gettext('Restore enrollment code'),
+                                    action_name: gettext('Restore enrolment code'),
                                     registration_code: lookup_registration_code,
                                     action_type: 'validate_registration_code'
                                 }
@@ -134,7 +134,7 @@ var edx = edx || {};
                             actions.push(
                                 {
                                     action_url: data.registration_code_detail_url,
-                                    action_name: gettext('Mark enrollment code as unused'),
+                                    action_name: gettext('Mark enrolment code as unused'),
                                     registration_code: lookup_registration_code,
                                     action_type: 'unredeem_registration_code'
                                 }
