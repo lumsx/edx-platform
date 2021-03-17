@@ -158,9 +158,16 @@
       white-space: nowrap;
     }
 
-
     label {
       display: inline-block;
+    }
+
+    .listing-sort-select {
+      width: auto;
+      border: 1px solid #ccc;
+      padding: 0;
+      line-height: 1;
+      height: 27px;
     }
   }
 
@@ -602,6 +609,7 @@
 }
 
 .teams-content {
+  padding-top: ($baseline/2);
   .teams-main {
     .team-edit-fields {
       overflow: hidden;
