@@ -55,6 +55,9 @@
                         self.$el.append(_.template(teamActionsTemplate)({message: message}));
                     }
                 });
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 500);
                 return this;
             },
 
