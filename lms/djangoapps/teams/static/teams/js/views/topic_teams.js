@@ -55,6 +55,9 @@
                         self.$el.append(_.template(teamActionsTemplate)({message: message}));
                     }
                 });
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 500);
                 return this;
             },
 
@@ -79,6 +82,9 @@
                         'topics/' + this.model.id + '/create-team',
                         {trigger: true}
                     );
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 500);
             },
 
             createHeaderView: function() {
